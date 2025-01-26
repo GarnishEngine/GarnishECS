@@ -1,5 +1,5 @@
 #include <iostream>
-#include "ECS.h"
+#include "garnish_ecs.h"
 
 void hello() {
   std::cout << "Hello World!" << std::endl;
