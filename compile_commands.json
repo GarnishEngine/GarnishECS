@@ -1,0 +1,14 @@
+[
+{
+  "directory": "/home/soybean44/code/cpp/GarnishECS/build",
+  "command": "/usr/bin/c++  -I/home/soybean44/code/cpp/GarnishECS/include  -o CMakeFiles/GarnishECS.dir/src/ECS.cc.o -c /home/soybean44/code/cpp/GarnishECS/src/ECS.cc",
+  "file": "/home/soybean44/code/cpp/GarnishECS/src/ECS.cc",
+  "output": "CMakeFiles/GarnishECS.dir/src/ECS.cc.o"
+},
+{
+  "directory": "/home/soybean44/code/cpp/GarnishECS/build",
+  "command": "/usr/bin/c++  -I/home/soybean44/code/cpp/GarnishECS/include  -o CMakeFiles/GarnishECSTest.dir/tests/main.cc.o -c /home/soybean44/code/cpp/GarnishECS/tests/main.cc",
+  "file": "/home/soybean44/code/cpp/GarnishECS/tests/main.cc",
+  "output": "CMakeFiles/GarnishECSTest.dir/tests/main.cc.o"
+}
+]
