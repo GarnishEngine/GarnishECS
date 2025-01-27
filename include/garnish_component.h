@@ -2,6 +2,7 @@
 #include <array>
 #include <cassert>
 #include <cstddef>
+#include <memory>
 #include <unordered_map>
 #include "garnish_ecs_common.h"
 
@@ -19,7 +20,7 @@ namespace garnish {
   template<typename T>
   class GarnishComponentArray : IComponentArray {
     public:
-      void AddEntity(GarnishEntity e, T component) {
+      void AddData(GarnishEntity e, T component) {
         GARNISH_VALID_ENTITY();
         assert(EntityToIndex.find(e) == EntityToIndex.end() && "Error: Entity already has this component");
         std::size_t NextIndex = CurrentIndex;
@@ -35,7 +36,7 @@ namespace garnish {
         return &ComponentArray[EntityToIndex[e]];
       }
 
-      void RemoveEntity(GarnishEntity e, T component) {
+      void RemoveData(GarnishEntity e, T component) {
         GARNISH_VALID_ENTITY();
         assert(EntityToIndex.find(e) != EntityToIndex.end() && "Error: Entity doesnt have this component");
 
@@ -58,7 +59,7 @@ namespace garnish {
       void EntityDestroyed(GarnishEntity entity) override {
         if (EntityToIndex.find(entity) != EntityToIndex.end()) {
           // Remove the entity's component if it existed
-          RemoveEntity(entity);
+          RemoveData(entity);
         }
 
       };
@@ -70,5 +71,66 @@ namespace garnish {
       std::unordered_map<std::size_t, GarnishEntity> IndexToEntity;
 
       std::size_t CurrentIndex = 0;
+  };
+
+  class GarnishComponentManager {
+    public:
+      template<typename T>
+      void RegisterComponent(){
+        const char* typeName = typeid(T).name();
+        assert(ComponentTypes.find(typeName) == ComponentTypes.end() && "Error: Component is already registered");
+        // Create new ComponentType
+        ComponentTypes.insert(typeName, NextComponentType);
+        // Create new ComponentArray
+        ComponentArrays.insert(typeName, std::make_shared<GarnishComponentArray<T>>());
+        NextComponentType++;
+      }
+
+      template<typename T>
+      GarnishComponentType GetComponentType() {
+          const char* typeName = typeid(T).name();
+
+          assert(ComponentTypes.find(typeName) != ComponentTypes.end() && "Component not registered before use.");
+
+          // Return this component's type - used for creating signatures
+          return ComponentTypes[typeName];
+        }
+
+      template<typename T>
+      void AddComponent(GarnishEntity entity, T component) {
+        // Add a component to the array for an entity
+        GetComponentArray<T>()->InsertData(entity, component);
+      }
+
+      template<typename T>
+      void RemoveComponent(GarnishEntity entity) {
+        // Remove a component from the array for an entity
+        GetComponentArray<T>()->RemoveData(entity);
+      }
+
+      template<typename T>
+      T& GetComponent(GarnishEntity entity) {
+        // Get a reference to a component from the array for an entity
+        return GetComponentArray<T>()->GetData(entity);
+      }
+
+      void EntityDestroyed(GarnishEntity entity);
+
+    private:
+      std::unordered_map<const char*, GarnishComponentType> ComponentTypes;
+      std::unordered_map<const char*, std::shared_ptr<IComponentArray>> ComponentArrays;
+
+      GarnishComponentType NextComponentType{};
+
+      // Convenience function to get the statically casted pointer to the ComponentArray of type T.
+      template<typename T>
+      std::shared_ptr<GarnishComponentArray<T>> GetComponentArray() {
+        const char* typeName = typeid(T).name();
+
+        assert(ComponentTypes.find(typeName) != ComponentTypes.end() && "Error: Component not registered before use.");
+
+        return std::static_pointer_cast<GarnishComponentArray<T>>(ComponentArrays[typeName]);
+      }
+
   };
 }

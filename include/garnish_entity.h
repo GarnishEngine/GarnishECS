@@ -5,9 +5,9 @@
 
 namespace garnish {
 
-  class EntityManager {
+  class GarnishEntityManager {
     public:
-      EntityManager();
+      GarnishEntityManager();
 
       GarnishEntity NewEntity();
       void SetSignature(GarnishEntity e, GarnishSignature s);

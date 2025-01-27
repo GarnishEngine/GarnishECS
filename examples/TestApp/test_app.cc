@@ -11,21 +11,22 @@ void greet(Person& p) {
 }
 
 int main (void) {
-  garnish::ECSManager ecs;
+  garnish::GarnishECSManager ecs;
 
   Person bob = {
     .name = "Bob"
   };
 
-  ecs.AddPlugin([](garnish::ECSManager* e){
+  ecs.AddPlugin([](garnish::GarnishECSManager* e){
     e->hello();
   });
+  
+  ecs.NewComponent<Person>();
+  auto entity = ecs.NewEntity();
+  ecs.AddComponents<Person>(entity, bob);
 
   // Implement the following code
-  // ecs.Component<Person>();
-  // auto entity = ecs.Entity();
-  // ecs.AddComponents<Person>(entity, bob);
-  // ecs.System<Person>(ECS_SYSTEM_STARTUP, greet);
+  // ecs.NewSystem<Person>(ECS_SYSTEM_STARTUP, greet);
   // ecs.RunStartup();
   // while (ecs.RunUpdate());
   return 0;
