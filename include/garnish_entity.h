@@ -1,16 +1,9 @@
 #pragma once
 #include <array>
-#include <bitset>
-#include <cstdint>
 #include <deque>
-#include "garnish_component.h"
+#include "garnish_ecs_common.h"
 
 namespace garnish {
-  using GarnishEntity = std::uint32_t;
-
-  constexpr GarnishEntity MAX_ENTITIES = 5000;
-
-  using GarnishSignature = std::bitset<MAX_COMPONENTS>;
 
   class EntityManager {
     public:
