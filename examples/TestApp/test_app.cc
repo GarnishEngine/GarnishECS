@@ -17,6 +17,10 @@ int main (void) {
     .name = "Bob"
   };
 
+  ecs.AddPlugin([](garnish::ECSManager* e){
+    e->hello();
+  });
+
   // Implement the following code
   // ecs.Component<Person>();
   // auto entity = ecs.Entity();

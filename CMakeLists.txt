@@ -5,6 +5,9 @@ project(GarnishECS)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# Settings
+option(_BUILD_EXAMPLES "Build Examples" ON)
+
 # Add include directory
 include_directories("include")
 
@@ -27,5 +30,7 @@ install(TARGETS GarnishECS
     PUBLIC_HEADER DESTINATION include/GarnishECS)
 
 # Add the test program
-add_executable(GarnishECSTest "tests/main.cc")
-target_link_libraries(GarnishECSTest GarnishECS)
+# Building examples:
+if (_BUILD_EXAMPLES)
+    add_subdirectory("examples")
+endif(_BUILD_EXAMPLES)

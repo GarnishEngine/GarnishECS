@@ -1,6 +1,8 @@
 #include <iostream>
 #include "garnish_ecs.h"
 
-void hello() {
-  std::cout << "Hello World!" << std::endl;
+namespace garnish {
+  void ECSManager::AddPlugin(void (*plugin)(ECSManager*)) {
+    plugin(this);
+  }
 }
