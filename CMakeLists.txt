@@ -7,6 +7,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Settings
 option(_BUILD_EXAMPLES "Build Examples" ON)
+option(_BUILD_UNIT_TESTS "Build Unit Tests" ON)
 
 # Add include directory
 include_directories("include")
@@ -34,3 +35,7 @@ install(TARGETS GarnishECS
 if (_BUILD_EXAMPLES)
     add_subdirectory("examples")
 endif(_BUILD_EXAMPLES)
+
+if (_BUILD_UNIT_TESTS)
+    add_subdirectory("tests")
+endif(_BUILD_UNIT_TESTS)
