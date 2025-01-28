@@ -18,7 +18,7 @@ namespace garnish {
   };
 
   template<typename T>
-  class GarnishComponentArray : IComponentArray {
+  class GarnishComponentArray : public IComponentArray {
     public:
       void AddData(GarnishEntity e, T component) {
         GARNISH_VALID_ENTITY();
@@ -59,7 +59,7 @@ namespace garnish {
       void EntityDestroyed(GarnishEntity entity) override {
         if (EntityToIndex.find(entity) != EntityToIndex.end()) {
           // Remove the entity's component if it existed
-          RemoveData(entity);
+          // RemoveData(entity);
         }
 
       };
@@ -80,9 +80,12 @@ namespace garnish {
         const char* typeName = typeid(T).name();
         assert(ComponentTypes.find(typeName) == ComponentTypes.end() && "Error: Component is already registered");
         // Create new ComponentType
-        ComponentTypes.insert(typeName, NextComponentType);
+        // ComponentTypes.insert(typeName, NextComponentType);
+        ComponentTypes[typeName] = NextComponentType;
         // Create new ComponentArray
-        ComponentArrays.insert(typeName, std::make_shared<GarnishComponentArray<T>>());
+        // ComponentArrays.insert(typeName, std::make_shared<GarnishComponentArray<T>>());
+        std::shared_ptr<GarnishComponentArray<T>> ptr = std::make_shared<GarnishComponentArray<T>>();
+        ComponentArrays[typeName] = ptr;
         NextComponentType++;
       }
 
@@ -99,13 +102,13 @@ namespace garnish {
       template<typename T>
       void AddComponent(GarnishEntity entity, T component) {
         // Add a component to the array for an entity
-        GetComponentArray<T>()->InsertData(entity, component);
+        // GetComponentArray<T>()->InsertData(entity, component);
       }
 
       template<typename T>
       void RemoveComponent(GarnishEntity entity) {
         // Remove a component from the array for an entity
-        GetComponentArray<T>()->RemoveData(entity);
+        // GetComponentArray<T>()->RemoveData(entity);
       }
 
       template<typename T>

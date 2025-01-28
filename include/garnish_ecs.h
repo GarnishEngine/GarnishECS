@@ -28,6 +28,10 @@ namespace garnish {
       void AddComponent(GarnishEntity e, T component) {
         ComponentManager->AddComponent<T>(e,component); 
       }
+      template<typename T>
+      void AddComponents(GarnishEntity e, T component) {
+        ComponentManager->AddComponent<T>(e,component); 
+      }
 
       template<typename T, typename... Components>
       void AddComponents(GarnishEntity e, T first, Components... rest) {
