@@ -5,6 +5,7 @@
 #include "garnish_system.h"
 #include <iostream>
 #include <memory>
+#include <vector>
 
 namespace garnish {
   class GarnishECSManager {
@@ -29,13 +30,39 @@ namespace garnish {
         return ComponentManager->GetComponent<T>(e);
       }
 
+      template<typename... Components>
+      GarnishSignature GetSignature(GarnishSignature s) {
+        return s;
+      }
+
+      template<typename T, typename... Components>
+      GarnishSignature GetSignature(GarnishSignature s) {
+        s.set(ComponentManager->GetComponentType<T>());
+        return GetSignature<Components...>(s);
+      }
+
+      template<typename T, typename... Components>
+      GarnishSignature GetSignature() {
+        GarnishSignature s;
+        s.set(ComponentManager->GetComponentType<T>());
+        return GetSignature<Components...>(s);
+      }
+      
+      template<typename... Components>
+      std::vector<GarnishEntity> GetEntities() {
+        return GetEntities(GetSignature<Components...>());
+      }
+      
+      std::vector<GarnishEntity> GetEntities(GarnishSignature s);
+
       template<typename T>
       void AddComponent(GarnishEntity e, T component) {
         ComponentManager->AddComponent<T>(e,component); 
+        EntityManager->SetSignature(e, ComponentManager->GetComponentType<T>());
       }
       template<typename T>
       void AddComponents(GarnishEntity e, T component) {
-        ComponentManager->AddComponent<T>(e,component); 
+         AddComponent(e,component);
       }
 
       template<typename T, typename... Components>
@@ -43,8 +70,12 @@ namespace garnish {
          AddComponent(e,first);
          AddComponents(e,rest...);
       }
-
-      void AddComponents(GarnishEntity e);
+      template<typename... Components>
+      GarnishEntity NewEntityWithComponents(Components... components) {
+        GarnishEntity e = NewEntity();
+        AddComponents<Components...>(e, components...);
+        return e;
+      }
 
       GarnishEntity NewEntity();
       void AddPlugin(void (*plugin)(GarnishECSManager*));
@@ -52,5 +83,6 @@ namespace garnish {
     private:
       std::unique_ptr<GarnishEntityManager> EntityManager;
       std::unique_ptr<GarnishComponentManager> ComponentManager;
+
   };
 }

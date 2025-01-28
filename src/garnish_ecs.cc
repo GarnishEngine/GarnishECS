@@ -10,6 +10,10 @@ namespace garnish {
     return EntityManager->NewEntity();
   }
 
+  std::vector<GarnishEntity> GarnishECSManager::GetEntities(GarnishSignature s) {
+    return EntityManager->GetEntities(s);
+  };
+
   void GarnishECSManager::AddPlugin(void (*plugin)(GarnishECSManager*)) {
     plugin(this);
   }

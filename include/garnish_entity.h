@@ -1,6 +1,7 @@
 #pragma once
 #include <array>
 #include <deque>
+#include <vector>
 #include "garnish_ecs_common.h"
 
 namespace garnish {
@@ -10,8 +11,9 @@ namespace garnish {
       GarnishEntityManager();
 
       GarnishEntity NewEntity();
-      void SetSignature(GarnishEntity e, GarnishSignature s);
+      void SetSignature(GarnishEntity e, GarnishComponentType component);
       GarnishSignature GetSignature(GarnishEntity e);
+      std::vector<GarnishEntity> GetEntities(GarnishSignature s);
       void RemoveEntity(GarnishEntity e);
 
     private:

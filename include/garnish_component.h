@@ -36,7 +36,7 @@ namespace garnish {
         return ComponentArray[EntityToIndex[e]];
       }
 
-      void RemoveData(GarnishEntity e, T component) {
+      void RemoveData(GarnishEntity e) {
         GARNISH_VALID_ENTITY();
         assert(EntityToIndex.find(e) != EntityToIndex.end() && "Error: Entity doesnt have this component");
 
@@ -59,7 +59,7 @@ namespace garnish {
       void EntityDestroyed(GarnishEntity entity) override {
         if (EntityToIndex.find(entity) != EntityToIndex.end()) {
           // Remove the entity's component if it existed
-          // RemoveData(entity);
+          RemoveData(entity);
         }
 
       };

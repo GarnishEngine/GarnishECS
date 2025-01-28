@@ -17,11 +17,19 @@ int main (void) {
     .name = "Bob"
   };
 
+  Person peter = {
+    .name = "Peter"
+  };
+
   ecs.NewComponent<Person>();
-  auto entity = ecs.NewEntity();
-  ecs.AddComponents<Person>(entity, bob);
-  Person& p = ecs.GetComponent<Person>(entity);
-  greet(p);
+  auto e1 = ecs.NewEntityWithComponents<Person>(bob);
+  auto e2 = ecs.NewEntityWithComponents<Person>(peter);
+  auto entities = ecs.GetEntities<Person>();
+  std::cout << entities.size() << "\n";
+  for (auto entity : entities) {
+    Person& p = ecs.GetComponent<Person>(entity);
+    greet(p);
+  }
   // Implement the following code
   // ecs.NewSystem<Person>(ECS_SYSTEM_STARTUP, greet);
   // ecs.RunStartup();

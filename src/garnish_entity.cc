@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <cassert>
 #include <cstddef>
+#include <iostream>
 
 namespace garnish {
   GarnishEntityManager::GarnishEntityManager() {
@@ -16,15 +17,26 @@ namespace garnish {
     AvailableEntities.pop_front();
     return e;
   }
-  void GarnishEntityManager::SetSignature(GarnishEntity e, GarnishSignature s) {
+  void GarnishEntityManager::SetSignature(GarnishEntity e, GarnishComponentType component) {
     GARNISH_VALID_ENTITY();
-    Signatures[e]=s;
+    Signatures[e].set(component);
   }
 
   GarnishSignature GarnishEntityManager::GetSignature(GarnishEntity e) {
     GARNISH_VALID_ENTITY();
     assert(std::find(AvailableEntities.begin(), AvailableEntities.end(), e) != AvailableEntities.end() && "Error: Entity Not registered");
     return Signatures[e];
+  }
+
+  std::vector<GarnishEntity> GarnishEntityManager::GetEntities(GarnishSignature s) {
+    assert(s!=0 && "Error: cannot get empty entities, ensure your entity has a component or change your querry signature");
+    std::vector<GarnishEntity> entities;
+    for (GarnishEntity i=0; i<AvailableEntities.front(); i++) {
+      if ((Signatures[i]&s)==s) {
+        entities.push_back(i);
+      }
+    }
+    return entities;
   }
 
   void GarnishEntityManager::RemoveEntity(GarnishEntity e) {
