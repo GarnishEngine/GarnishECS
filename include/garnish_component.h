@@ -30,10 +30,10 @@ namespace garnish {
         CurrentIndex++; 
       }
 
-      T& GetComponent(GarnishEntity e) {
+      T& GetData(GarnishEntity e) {
         GARNISH_VALID_ENTITY();
         assert(EntityToIndex.find(e) != EntityToIndex.end() && "Error: Entity doesnt have this component");
-        return &ComponentArray[EntityToIndex[e]];
+        return ComponentArray[EntityToIndex[e]];
       }
 
       void RemoveData(GarnishEntity e, T component) {
@@ -102,13 +102,13 @@ namespace garnish {
       template<typename T>
       void AddComponent(GarnishEntity entity, T component) {
         // Add a component to the array for an entity
-        // GetComponentArray<T>()->InsertData(entity, component);
+        GetComponentArray<T>()->AddData(entity, component);
       }
 
       template<typename T>
       void RemoveComponent(GarnishEntity entity) {
         // Remove a component from the array for an entity
-        // GetComponentArray<T>()->RemoveData(entity);
+        GetComponentArray<T>()->RemoveData(entity);
       }
 
       template<typename T>

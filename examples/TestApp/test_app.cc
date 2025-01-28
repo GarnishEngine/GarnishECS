@@ -17,14 +17,11 @@ int main (void) {
     .name = "Bob"
   };
 
-  ecs.AddPlugin([](garnish::GarnishECSManager* e){
-    e->hello();
-  });
-  
   ecs.NewComponent<Person>();
   auto entity = ecs.NewEntity();
   ecs.AddComponents<Person>(entity, bob);
-
+  Person& p = ecs.GetComponent<Person>(entity);
+  greet(p);
   // Implement the following code
   // ecs.NewSystem<Person>(ECS_SYSTEM_STARTUP, greet);
   // ecs.RunStartup();

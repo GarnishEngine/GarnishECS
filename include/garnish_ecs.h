@@ -25,6 +25,11 @@ namespace garnish {
         return ComponentManager->GetComponentType<T>();
       }
       template<typename T>
+      T& GetComponent(GarnishEntity e) {
+        return ComponentManager->GetComponent<T>(e);
+      }
+
+      template<typename T>
       void AddComponent(GarnishEntity e, T component) {
         ComponentManager->AddComponent<T>(e,component); 
       }
@@ -43,10 +48,6 @@ namespace garnish {
 
       GarnishEntity NewEntity();
       void AddPlugin(void (*plugin)(GarnishECSManager*));
-
-      inline void hello() {
-        std::cout << "Hello world!\n";
-      };
 
     private:
       std::unique_ptr<GarnishEntityManager> EntityManager;
