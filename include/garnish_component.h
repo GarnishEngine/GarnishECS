@@ -20,51 +20,13 @@ namespace garnish {
   template<typename T>
   class GarnishComponentArray : public IComponentArray {
     public:
-      void AddData(GarnishEntity e, T component) {
-        GARNISH_VALID_ENTITY();
-        assert(EntityToIndex.find(e) == EntityToIndex.end() && "Error: Entity already has this component");
-        std::size_t NextIndex = CurrentIndex;
-        ComponentArray[NextIndex] = component;
-        EntityToIndex[e]=NextIndex;
-        IndexToEntity[NextIndex]=e;
-        CurrentIndex++; 
-      }
+      void AddData(GarnishEntity e, T component);
+      T &GetData(GarnishEntity e);
+      void RemoveData(GarnishEntity e);
+      void EntityDestroyed(GarnishEntity entity) override;
 
-      T& GetData(GarnishEntity e) {
-        GARNISH_VALID_ENTITY();
-        assert(EntityToIndex.find(e) != EntityToIndex.end() && "Error: Entity doesnt have this component");
-        return ComponentArray[EntityToIndex[e]];
-      }
-
-      void RemoveData(GarnishEntity e) {
-        GARNISH_VALID_ENTITY();
-        assert(EntityToIndex.find(e) != EntityToIndex.end() && "Error: Entity doesnt have this component");
-
-        // Move the last element to the removed element's index
-        std::size_t IndexRemoved = EntityToIndex[e]; 
-        std::size_t IndexOfLastElement = CurrentIndex-1; 
-        // Ingore IndexOfLastElement as it will be overwriten when a new entity gains this component
-        ComponentArray[IndexRemoved] = ComponentArray[IndexOfLastElement];
-        
-        // update the maps
-        GarnishEntity movedEntity = IndexToEntity[IndexOfLastElement];
-        EntityToIndex[movedEntity] = IndexRemoved;
-        IndexToEntity[IndexRemoved] = movedEntity;
-
-        EntityToIndex.erase(e);
-        IndexToEntity.erase(IndexOfLastElement);
-        CurrentIndex--; 
-      }
-
-      void EntityDestroyed(GarnishEntity entity) override {
-        if (EntityToIndex.find(entity) != EntityToIndex.end()) {
-          // Remove the entity's component if it existed
-          RemoveData(entity);
-        }
-
-      };
-
-    private:
+    private: 
+    
       std::array<T, MAX_ENTITIES> ComponentArray;
 
       std::unordered_map<GarnishEntity, std::size_t> EntityToIndex;
@@ -137,3 +99,5 @@ namespace garnish {
 
   };
 }
+
+#include "garnish_component.tpp"
