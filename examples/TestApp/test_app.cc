@@ -22,8 +22,8 @@ int main (void) {
   });
   
   ecs.NewComponent<Person>();
-  auto entity = ecs.NewEntity();
-  ecs.AddComponents<Person>(entity, bob);
+  // auto entity = ecs.NewEntity();
+  // ecs.AddComponents<Person>(entity, bob);
 
   // Implement the following code
   // ecs.NewSystem<Person>(ECS_SYSTEM_STARTUP, greet);
