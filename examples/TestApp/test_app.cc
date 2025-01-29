@@ -3,33 +3,33 @@
 #include <string>
 
 struct Person {
-  std::string name;
+    std::string name;
 };
 
 void greet(Person& p) {
-  std::cout << "Hello, " << p.name << "!\n";
+    std::cout << "Hello, " << p.name << "!\n";
 }
 
 int main (void) {
-  garnish::ECSManager ecs;
+    garnish::ECSManager ecs;
 
-  Person bob = {
-    .name = "Bob"
-  };
+    Person bob = {
+        .name = "Bob"
+    };
 
-  Person peter = {
-    .name = "Peter"
-  };
+    Person peter = {
+        .name = "Peter"
+    };
 
-  ecs.NewComponent<Person>();
-  auto e1 = ecs.NewEntityWithComponents<Person>(bob);
-  auto e2 = ecs.NewEntityWithComponents<Person>(peter);
+    ecs.NewComponent<Person>();
+    auto e1 = ecs.NewEntityWithComponents<Person>(bob);
+    auto e2 = ecs.NewEntityWithComponents<Person>(peter);
 
-  auto entities = ecs.GetEntities<Person>();
-  for (auto entity : entities) {
-   Person& p = ecs.GetComponent<Person>(entity);
-   greet(p);
-  }
+    auto entities = ecs.GetEntities<Person>();
+    for (auto entity : entities) {
+    Person& p = ecs.GetComponent<Person>(entity);
+    greet(p);
+    }
 
-  return 0;
+    return 0;
 }
