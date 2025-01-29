@@ -3,7 +3,7 @@
 #include "garnish_component.h"
 #include "garnish_entity.h"
 #include "garnish_system.h"
-#include <iostream>
+#include <functional>
 #include <memory>
 #include <vector>
 
@@ -12,7 +12,7 @@ namespace garnish {
         public:
         ECSManager(); 
 
-        template<typename... Components> void NewSystem(ECS_SYSTEM_TYPE type, void (*sys)(Components&...));
+        template<typename... Components> void NewSystem(ECS_SYSTEM_TYPE type, std::function<void(Components...)> sys);
 
         void AddPlugin(void (*plugin)(ECSManager*));
 
@@ -33,9 +33,13 @@ namespace garnish {
         template<typename T, typename... Components> void AddComponents(Entity e, T first, Components... rest);
         template<typename... Components> Entity NewEntityWithComponents(Components... components);
 
+        void RunStartup();
+        void RunUpdate();
+
         private:
         std::unique_ptr<EntityManager> entityManager;
         std::unique_ptr<ComponentManager> componentManager;
+        std::unique_ptr<SystemManager> systemManager;
 
     };
 }

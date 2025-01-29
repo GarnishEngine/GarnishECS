@@ -3,6 +3,11 @@
 #include <bitset>
 
 namespace garnish {
+  typedef enum {
+    ECS_SYSTEM_STARTUP,
+    ECS_SYSTEM_UPDATE
+  } ECS_SYSTEM_TYPE;
+
   using Entity = std::uint32_t;
   using ComponentType = std::uint8_t;
   
