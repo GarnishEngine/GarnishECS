@@ -9,80 +9,35 @@
 
 namespace garnish {
   class GarnishECSManager {
-    public:
-      GarnishECSManager(); 
-      template<typename... Components>
-      void NewSystem(ECS_SYSTEM_TYPE type, void (*sys)(Components&...)) {
-        // TODO: initialize the system and have it loop oever all entities
-        // That have the specified components and run sys.
-      }
-      template<typename T>
-      void NewComponent() {
-        ComponentManager->RegisterComponent<T>();
-      }
+        public:
+        GarnishECSManager(); 
 
-      template<typename T>
-      GarnishComponentType GetComponentType() {
-        return ComponentManager->GetComponentType<T>();
-      }
-      template<typename T>
-      T& GetComponent(GarnishEntity e) {
-        return ComponentManager->GetComponent<T>(e);
-      }
+        template<typename... Components> void NewSystem(ECS_SYSTEM_TYPE type, void (*sys)(Components&...));
 
-      template<typename... Components>
-      GarnishSignature GetSignature(GarnishSignature s) {
-        return s;
-      }
+        void AddPlugin(void (*plugin)(GarnishECSManager*));
 
-      template<typename T, typename... Components>
-      GarnishSignature GetSignature(GarnishSignature s) {
-        s.set(ComponentManager->GetComponentType<T>());
-        return GetSignature<Components...>(s);
-      }
+        template<typename... Components> std::vector<GarnishEntity> GetEntities();
+        std::vector<GarnishEntity> GetEntities(GarnishSignature s);
+        GarnishEntity NewEntity();
 
-      template<typename T, typename... Components>
-      GarnishSignature GetSignature() {
-        GarnishSignature s;
-        s.set(ComponentManager->GetComponentType<T>());
-        return GetSignature<Components...>(s);
-      }
-      
-      template<typename... Components>
-      std::vector<GarnishEntity> GetEntities() {
-        return GetEntities(GetSignature<Components...>());
-      }
-      
-      std::vector<GarnishEntity> GetEntities(GarnishSignature s);
+        template<typename... Components> GarnishSignature GetSignature(GarnishSignature s);
+        template<typename T, typename... Components> GarnishSignature GetSignature(GarnishSignature s);
+        template<typename T, typename... Components> GarnishSignature GetSignature();
 
-      template<typename T>
-      void AddComponent(GarnishEntity e, T component) {
-        ComponentManager->AddComponent<T>(e,component); 
-        EntityManager->SetSignature(e, ComponentManager->GetComponentType<T>());
-      }
-      template<typename T>
-      void AddComponents(GarnishEntity e, T component) {
-         AddComponent(e,component);
-      }
+        template<typename T> void NewComponent();
+        template<typename T> GarnishComponentType GetComponentType();
+        template<typename T> T& GetComponent(GarnishEntity e);
 
-      template<typename T, typename... Components>
-      void AddComponents(GarnishEntity e, T first, Components... rest) {
-         AddComponent(e,first);
-         AddComponents(e,rest...);
-      }
-      template<typename... Components>
-      GarnishEntity NewEntityWithComponents(Components... components) {
-        GarnishEntity e = NewEntity();
-        AddComponents<Components...>(e, components...);
-        return e;
-      }
+        template<typename T> void AddComponent(GarnishEntity e, T component);
+        template<typename T> void AddComponents(GarnishEntity e, T component);
+        template<typename T, typename... Components> void AddComponents(GarnishEntity e, T first, Components... rest);
+        template<typename... Components> GarnishEntity NewEntityWithComponents(Components... components);
 
-      GarnishEntity NewEntity();
-      void AddPlugin(void (*plugin)(GarnishECSManager*));
+        private:
+        std::unique_ptr<GarnishEntityManager> EntityManager;
+        std::unique_ptr<GarnishComponentManager> ComponentManager;
 
-    private:
-      std::unique_ptr<GarnishEntityManager> EntityManager;
-      std::unique_ptr<GarnishComponentManager> ComponentManager;
-
-  };
+    };
 }
+
+#include "garnish_ecs.tpp"
