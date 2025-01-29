@@ -24,7 +24,15 @@ int main (void) {
   ecs.NewComponent<Person>();
   auto e1 = ecs.NewEntityWithComponents<Person>(bob);
   auto e2 = ecs.NewEntityWithComponents<Person>(peter);
-  auto entities = ecs.GetEntities<Person>();
+
+  // OLD SYSTEM IMPLEMENTATION
+  // auto entities = ecs.GetEntities<Person>();
+  // for (auto entity : entities) {
+  //  Person& p = ecs.GetComponent<Person>(entity);
+  //  greet(p);
+  // }
+
+
   ecs.NewSystem<Person>(garnish::ECS_SYSTEM_STARTUP, greet);
   ecs.RunStartup();
   return 0;
