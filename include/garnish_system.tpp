@@ -5,11 +5,12 @@ namespace garnish {
     System<Components...>::System(std::function<void(Components...)> f) {
       SystemFunction = f;
     }
+
     template<typename... Components> 
     void System<Components...>::RunSystem(ECSManager& ecs) {
       auto entities = ecs.GetEntities<Components...>();
       for (auto entity : entities) {
-        SystemFunction(ecs.GetComponents<Components>(),...);
+        SystemFunction(ecs.GetComponents<Components>(entity),...);
       }
     }
 
