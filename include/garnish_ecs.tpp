@@ -1,12 +1,6 @@
 #include "garnish_ecs.h"
 
 namespace garnish {
-    template<typename... Components>
-    void ECSManager::NewSystem(ECS_SYSTEM_TYPE type, std::function<void(Components...)> sys) {
-        // TODO: initialize the system and have it loop oever all entities
-        // That have the specified components and run sys.
-    }
-
     template<typename T>
     void ECSManager::NewComponent() {
         componentManager->RegisterComponent<T>();
