@@ -49,7 +49,7 @@ namespace garnish {
             // Remove the entity's component if it existed
             RemoveData(entity);
         }
-    };
+    }
     
     template<typename T> 
     void GarnishComponentManager::RegisterComponent() {

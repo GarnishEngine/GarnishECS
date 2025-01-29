@@ -8,7 +8,7 @@
 #include <vector>
 
 namespace garnish {
-  class GarnishECSManager {
+    class GarnishECSManager {
         public:
         GarnishECSManager(); 
 

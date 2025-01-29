@@ -7,12 +7,11 @@
 #include "garnish_ecs_common.h"
 
 namespace garnish {
-  // The one instance of virtual inheritance in the entire implementation.
-  // An interface is needed so that the GarnishComponentManager (seen later)
-  // can tell a generic ComponentArray that an entity has been destroyed
-  // and that it needs to update its array mappings.
-    
     class IComponentArray {
+        // The one instance of virtual inheritance in the entire implementation.
+        // An interface is needed so that the GarnishComponentManager (seen later)
+        // can tell a generic ComponentArray that an entity has been destroyed
+        // and that it needs to update its array mappings.
         public:
         virtual ~IComponentArray() = default;
         virtual void EntityDestroyed(GarnishEntity entity) = 0;
@@ -51,8 +50,7 @@ namespace garnish {
         GarnishComponentType NextComponentType{};
 
         // Convenience function to get the statically casted pointer to the ComponentArray of type T.
-        template<typename T>
-        std::shared_ptr<GarnishComponentArray<T>> GetComponentArray();
+        template<typename T> std::shared_ptr<GarnishComponentArray<T>> GetComponentArray();
 
     };
 }
