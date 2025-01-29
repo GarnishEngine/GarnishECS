@@ -5,33 +5,33 @@
 #include <iostream>
 
 namespace garnish {
-  GarnishEntityManager::GarnishEntityManager() {
-    for (GarnishEntity i=0; i<MAX_ENTITIES; i++) {
+  EntityManager::EntityManager() {
+    for (Entity i=0; i<MAX_ENTITIES; i++) {
       AvailableEntities.push_back(i);
     }
   }
 
-  GarnishEntity GarnishEntityManager::NewEntity() {
+  Entity EntityManager::NewEntity() {
     assert(!AvailableEntities.empty() && "Error: Exceeded maximum entity count");
-    GarnishEntity e = AvailableEntities.front();
+    Entity e = AvailableEntities.front();
     AvailableEntities.pop_front();
     return e;
   }
-  void GarnishEntityManager::SetSignature(GarnishEntity e, GarnishComponentType component) {
+  void EntityManager::SetSignature(Entity e, ComponentType component) {
     GARNISH_VALID_ENTITY();
     Signatures[e].set(component);
   }
 
-  GarnishSignature GarnishEntityManager::GetSignature(GarnishEntity e) {
+  Signature EntityManager::GetSignature(Entity e) {
     GARNISH_VALID_ENTITY();
     assert(std::find(AvailableEntities.begin(), AvailableEntities.end(), e) != AvailableEntities.end() && "Error: Entity Not registered");
     return Signatures[e];
   }
 
-  std::vector<GarnishEntity> GarnishEntityManager::GetEntities(GarnishSignature s) {
+  std::vector<Entity> EntityManager::GetEntities(Signature s) {
     assert(s!=0 && "Error: cannot get empty entities, ensure your entity has a component or change your querry signature");
-    std::vector<GarnishEntity> entities;
-    for (GarnishEntity i=0; i<AvailableEntities.front(); i++) {
+    std::vector<Entity> entities;
+    for (Entity i=0; i<AvailableEntities.front(); i++) {
       if ((Signatures[i]&s)==s) {
         entities.push_back(i);
       }
@@ -39,7 +39,7 @@ namespace garnish {
     return entities;
   }
 
-  void GarnishEntityManager::RemoveEntity(GarnishEntity e) {
+  void EntityManager::RemoveEntity(Entity e) {
     GARNISH_VALID_ENTITY();
     // Check if the entity id is valid and not available, this is why we use a deque instead of a queue
     assert(std::find(AvailableEntities.begin(), AvailableEntities.end(), e) == AvailableEntities.end() && "Error: Entity already available");

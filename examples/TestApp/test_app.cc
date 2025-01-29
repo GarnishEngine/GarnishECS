@@ -11,7 +11,7 @@ void greet(Person& p) {
 }
 
 int main (void) {
-  garnish::GarnishECSManager ecs;
+  garnish::ECSManager ecs;
 
   Person bob = {
     .name = "Bob"

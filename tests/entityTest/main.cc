@@ -5,14 +5,14 @@
 #include "garnish_ecs.h"
 
 int main (void) {
-    garnish::GarnishECSManager ecs;
+    garnish::ECSManager ecs;
 
-    garnish::GarnishEntity ent = std::numeric_limits<garnish::GarnishEntity>::max();
+    garnish::Entity ent = std::numeric_limits<garnish::Entity>::max();
     ent = ecs.NewEntity();
 
     assert(ent == 0 && "First entity created does not have the first index");
 
-    garnish::GarnishEntity ent2;
+    garnish::Entity ent2;
     for (size_t i = 1; i < garnish::MAX_ENTITIES; ++i) {
         ent2 = ecs.NewEntity();
     }

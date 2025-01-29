@@ -8,34 +8,34 @@
 #include <vector>
 
 namespace garnish {
-    class GarnishECSManager {
+    class ECSManager {
         public:
-        GarnishECSManager(); 
+        ECSManager(); 
 
         template<typename... Components> void NewSystem(ECS_SYSTEM_TYPE type, void (*sys)(Components&...));
 
-        void AddPlugin(void (*plugin)(GarnishECSManager*));
+        void AddPlugin(void (*plugin)(ECSManager*));
 
-        template<typename... Components> std::vector<GarnishEntity> GetEntities();
-        std::vector<GarnishEntity> GetEntities(GarnishSignature s);
-        GarnishEntity NewEntity();
+        template<typename... Components> std::vector<Entity> GetEntities();
+        std::vector<Entity> GetEntities(Signature s);
+        Entity NewEntity();
 
-        template<typename... Components> GarnishSignature GetSignature(GarnishSignature s);
-        template<typename T, typename... Components> GarnishSignature GetSignature(GarnishSignature s);
-        template<typename T, typename... Components> GarnishSignature GetSignature();
+        template<typename... Components> Signature GetSignature(Signature s);
+        template<typename T, typename... Components> Signature GetSignature(Signature s);
+        template<typename T, typename... Components> Signature GetSignature();
 
         template<typename T> void NewComponent();
-        template<typename T> GarnishComponentType GetComponentType();
-        template<typename T> T& GetComponent(GarnishEntity e);
+        template<typename T> ComponentType GetComponentType();
+        template<typename T> T& GetComponent(Entity e);
 
-        template<typename T> void AddComponent(GarnishEntity e, T component);
-        template<typename T> void AddComponents(GarnishEntity e, T component);
-        template<typename T, typename... Components> void AddComponents(GarnishEntity e, T first, Components... rest);
-        template<typename... Components> GarnishEntity NewEntityWithComponents(Components... components);
+        template<typename T> void AddComponent(Entity e, T component);
+        template<typename T> void AddComponents(Entity e, T component);
+        template<typename T, typename... Components> void AddComponents(Entity e, T first, Components... rest);
+        template<typename... Components> Entity NewEntityWithComponents(Components... components);
 
         private:
-        std::unique_ptr<GarnishEntityManager> EntityManager;
-        std::unique_ptr<GarnishComponentManager> ComponentManager;
+        std::unique_ptr<EntityManager> entityManager;
+        std::unique_ptr<ComponentManager> componentManager;
 
     };
 }

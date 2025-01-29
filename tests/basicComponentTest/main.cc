@@ -7,7 +7,7 @@
 struct A { };
 
 int main (void) {
-    garnish::GarnishECSManager ecs;
+    garnish::ECSManager ecs;
     ecs.NewComponent<A>();
 
     auto ent = ecs.NewEntity();
