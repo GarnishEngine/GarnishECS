@@ -11,8 +11,9 @@ namespace garnish {
     public:
         ECSManager();
 
-        Entity NewEntity();
-        template<typename... Components> Entity NewEntityWithComponents(Components... components);
+        Entity CreateEntity();
+        template<typename... Components> Entity CreateEntityWithComponents(Components... components);
+        void DestroyEntity(Entity e);
 
         template<typename T> void RegisterComponent();
 

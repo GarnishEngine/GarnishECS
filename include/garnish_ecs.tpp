@@ -2,8 +2,8 @@
 
 namespace garnish {
     template<typename... Components>
-    Entity ECSManager::NewEntityWithComponents(Components... components) {
-        Entity e = NewEntity();
+    Entity ECSManager::CreateEntityWithComponents(Components... components) {
+        Entity e = CreateEntity();
         AddComponents<Components...>(e, components...);
         return e;
     }

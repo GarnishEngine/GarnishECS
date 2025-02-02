@@ -10,7 +10,7 @@ int main (void) {
     garnish::ECSManager ecs;
     ecs.RegisterComponent<A>();
 
-    auto ent = ecs.NewEntity();
+    auto ent = ecs.CreateEntity();
     ecs.AddComponent<A>(ent, A{ });
 
     // assert(ecs.HasComponent<A>(ent) && "Entity dosent have component just added to it"); // TODO

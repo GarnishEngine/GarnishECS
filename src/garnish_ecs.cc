@@ -6,8 +6,12 @@ namespace garnish {
         entityManager = std::make_unique<EntityManager>();
     }
     
-    Entity ECSManager::NewEntity() {
+    Entity ECSManager::CreateEntity() {
         return entityManager->CreateEntity();
+    }
+
+    void ECSManager::DestroyEntity(Entity e) {
+        entityManager->DestroyEntity(e);
     }
 
     std::vector<Entity> ECSManager::GetEntities(Signature s) {
