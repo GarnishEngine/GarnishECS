@@ -49,3 +49,5 @@ CMakeUserPresets.json
 build/
 .cache/
 examples/TestApp/TestApp
+tests/basicComponentTest/BasicComponentTest
+tests/entityTest/EntityTest
