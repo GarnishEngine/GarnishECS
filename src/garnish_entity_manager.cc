@@ -1,4 +1,4 @@
-#include "garnish_entity.h"
+#include "garnish_entity_manager.h"
 #include <algorithm>
 #include <cassert>
 #include <cstddef>
