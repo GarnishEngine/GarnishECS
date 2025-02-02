@@ -21,15 +21,17 @@ int main (void) {
         .name = "Peter"
     };
 
-    ecs.NewComponent<Person>();
+    ecs.RegisterComponent<Person>();
     auto e1 = ecs.NewEntityWithComponents<Person>(bob);
     auto e2 = ecs.NewEntityWithComponents<Person>(peter);
 
     auto entities = ecs.GetEntities<Person>();
     for (auto entity : entities) {
-    Person& p = ecs.GetComponent<Person>(entity);
-    greet(p);
+        Person& p = ecs.GetComponent<Person>(entity);
+        greet(p);
     }
+
+
 
     return 0;
 }

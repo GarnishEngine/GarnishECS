@@ -14,7 +14,7 @@ namespace garnish {
         Entity NewEntity();
         template<typename... Components> Entity NewEntityWithComponents(Components... components);
 
-        template<typename T> void NewComponent();
+        template<typename T> void RegisterComponent();
 
         template<typename T> void AddComponent(Entity e, T component);
         template<typename T> void AddComponents(Entity e, T component);

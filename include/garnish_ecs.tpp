@@ -9,7 +9,7 @@ namespace garnish {
     }
 
     template<typename T>
-    void ECSManager::NewComponent() {
+    void ECSManager::RegisterComponent() {
         componentManager->RegisterComponent<T>();
     }
 
