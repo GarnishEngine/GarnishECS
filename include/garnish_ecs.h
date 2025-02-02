@@ -13,7 +13,7 @@ namespace garnish {
 
         Entity CreateEntity();
         template<typename... Components> Entity CreateEntityWithComponents(Components... components);
-        void DestroyEntity(Entity e);
+        void DestroyEntity(Entity& e);
 
         template<typename T> void RegisterComponent();
 

@@ -10,7 +10,7 @@ namespace garnish {
         return entityManager->CreateEntity();
     }
 
-    void ECSManager::DestroyEntity(Entity e) {
+    void ECSManager::DestroyEntity(Entity& e) {
         entityManager->DestroyEntity(e);
     }
 
