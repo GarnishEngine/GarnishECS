@@ -35,7 +35,7 @@ namespace garnish {
     };
 
     class ComponentManager {
-        public:
+    public:
         template<typename T> void RegisterComponent();
         template<typename T> ComponentType GetComponentType();
         template<typename T> void AddComponent(Entity entity, T component);
@@ -43,7 +43,7 @@ namespace garnish {
         template<typename T> T& GetComponent(Entity entity);
         void EntityDestroyed(Entity entity);
 
-        private:
+    private:
         std::unordered_map<const char*, ComponentType> ComponentTypes;
         std::unordered_map<const char*, std::shared_ptr<IComponentArray>> ComponentArrays;
 
@@ -51,8 +51,7 @@ namespace garnish {
 
         // Convenience function to get the statically casted pointer to the ComponentArray of type T.
         template<typename T> std::shared_ptr<ComponentArray<T>> GetComponentArray();
-
     };
 }
 
-#include "garnish_component.tpp"
+#include "garnish_component_manager.tpp"

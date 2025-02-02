@@ -1,4 +1,3 @@
-
 namespace garnish {
     template <typename T>
     void ComponentArray<T>::AddData(Entity e, T component) {
@@ -97,5 +96,4 @@ namespace garnish {
 
         return std::static_pointer_cast<ComponentArray<T>>(ComponentArrays[typeName]);
     }
-
 } 

@@ -1,6 +1,6 @@
 #pragma once
 #include "garnish_ecs_common.h"
-#include "garnish_component.h"
+#include "garnish_component_manager.h"
 #include "garnish_entity_manager.h"
 #include <functional>
 #include <memory>
