@@ -63,6 +63,18 @@ namespace garnish {
     }
 
     template<typename T>
+    void ComponentManager::AddComponent(Entity entity, T component) {
+        // Add a component to the array for an entity
+        GetComponentArray<T>()->AddComponent(entity, component);
+    }
+
+    template<typename T>
+    void ComponentManager::RemoveComponent(Entity entity) {
+        // Remove a component from the array for an entity
+        GetComponentArray<T>()->RemoveComponent(entity);
+    }
+
+    template<typename T>
     ComponentType ComponentManager::GetComponentType() {
         const char* typeName = typeid(T).name();
 
@@ -72,16 +84,6 @@ namespace garnish {
         return ComponentTypes[typeName];
     }
 
-    template<typename T>
-    void ComponentManager::AddComponent(Entity entity, T component) {
-        // Add a component to the array for an entity
-        GetComponentArray<T>()->AddComponent(entity, component);
-    }
-    template<typename T>
-    void ComponentManager::RemoveComponent(Entity entity) {
-        // Remove a component from the array for an entity
-        GetComponentArray<T>()->RemoveComponent(entity);
-    }
     template<typename T>
     T& ComponentManager::GetComponent(Entity entity) {
         // Get a reference to a component from the array for an entity
