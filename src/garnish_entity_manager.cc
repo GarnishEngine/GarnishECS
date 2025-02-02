@@ -19,7 +19,7 @@ namespace garnish {
         return e;
     }
 
-    void EntityManager::DeleteEntity(Entity e) {
+    void EntityManager::DestroyEntity(Entity e) {
         GARNISH_VALID_ENTITY();
         // Check if the entity id is valid and not available, this is why we use a deque instead of a queue
         assert(std::find(AvailableEntities.begin(), AvailableEntities.end(), e) == AvailableEntities.end() && "Error: Entity already available");

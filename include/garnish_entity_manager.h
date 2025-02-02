@@ -10,7 +10,7 @@ namespace garnish {
         EntityManager();
 
         Entity NewEntity();
-        void DeleteEntity(Entity e);
+        void DestroyEntity(Entity e);
 
         Signature GetSignature(Entity e);
         std::vector<Entity> GetEntities(Signature s);
