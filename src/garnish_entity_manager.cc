@@ -18,10 +18,14 @@ namespace garnish {
         AvailableEntities.pop_front();
         return e;
     }
-    void EntityManager::SetSignature(Entity e, ComponentType component) {
-        GARNISH_VALID_ENTITY();
 
-        Signatures[e].set(component);
+    void EntityManager::DeleteEntity(Entity e) {
+        GARNISH_VALID_ENTITY();
+        // Check if the entity id is valid and not available, this is why we use a deque instead of a queue
+        assert(std::find(AvailableEntities.begin(), AvailableEntities.end(), e) == AvailableEntities.end() && "Error: Entity already available");
+        
+        Signatures[e] = 0;
+        AvailableEntities.push_back(e);
     }
 
     Signature EntityManager::GetSignature(Entity e) {
@@ -29,6 +33,12 @@ namespace garnish {
         assert(std::find(AvailableEntities.begin(), AvailableEntities.end(), e) != AvailableEntities.end() && "Error: Entity Not registered");
 
         return Signatures[e];
+    }
+
+    void EntityManager::SetSignature(Entity e, ComponentType component) {
+        GARNISH_VALID_ENTITY();
+
+        Signatures[e].set(component);
     }
 
     std::vector<Entity> EntityManager::GetEntities(Signature s) {
@@ -42,14 +52,5 @@ namespace garnish {
         }
 
         return entities;
-    }
-
-    void EntityManager::RemoveEntity(Entity e) {
-        GARNISH_VALID_ENTITY();
-        // Check if the entity id is valid and not available, this is why we use a deque instead of a queue
-        assert(std::find(AvailableEntities.begin(), AvailableEntities.end(), e) == AvailableEntities.end() && "Error: Entity already available");
-        
-        Signatures[e] = 0;
-        AvailableEntities.push_back(e);
     }
 }

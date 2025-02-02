@@ -10,10 +10,12 @@ namespace garnish {
         EntityManager();
 
         Entity NewEntity();
-        void SetSignature(Entity e, ComponentType component);
+        void DeleteEntity(Entity e);
+
         Signature GetSignature(Entity e);
         std::vector<Entity> GetEntities(Signature s);
-        void RemoveEntity(Entity e);
+
+        void SetSignature(Entity e, ComponentType component);
 
     private:
         // Queue with available entity id's
