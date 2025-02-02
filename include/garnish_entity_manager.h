@@ -9,7 +9,7 @@ namespace garnish {
     public:
         EntityManager();
 
-        Entity NewEntity();
+        Entity CreateEntity();
         void DestroyEntity(Entity e);
 
         Signature GetSignature(Entity e);

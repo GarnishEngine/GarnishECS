@@ -7,7 +7,7 @@ namespace garnish {
     }
     
     Entity ECSManager::NewEntity() {
-        return entityManager->NewEntity();
+        return entityManager->CreateEntity();
     }
 
     std::vector<Entity> ECSManager::GetEntities(Signature s) {

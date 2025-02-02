@@ -11,7 +11,7 @@ namespace garnish {
         }
     }
 
-    Entity EntityManager::NewEntity() {
+    Entity EntityManager::CreateEntity() {
         assert(!AvailableEntities.empty() && "Error: Exceeded maximum entity count");
 
         Entity e = AvailableEntities.front();
