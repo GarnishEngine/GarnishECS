@@ -10,9 +10,9 @@ namespace garnish {
     void ComponentManager::EntityDestroyed(Entity entity) {
         for (auto const& pair : ComponentArrays)
         {
-        auto const& component = pair.second;
+            auto const& component = pair.second;
 
-        component->EntityDestroyed(entity);
+            component->EntityDestroyed(entity);
         }
     }
 }
