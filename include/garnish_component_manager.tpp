@@ -1,6 +1,6 @@
 namespace garnish {
     template <typename T>
-    void ComponentArray<T>::AddData(Entity e, T component) {
+    void ComponentArray<T>::AddComponent(Entity e, T component) {
         GARNISH_VALID_ENTITY();
         assert(EntityToIndex.find(e) == EntityToIndex.end() &&
                 "Error: Entity already has this component");
@@ -11,16 +11,8 @@ namespace garnish {
         CurrentIndex++;
     }
 
-    template <typename T> 
-    T &ComponentArray<T>::GetData(Entity e) {
-        GARNISH_VALID_ENTITY();
-        assert(EntityToIndex.find(e) != EntityToIndex.end() &&
-                "Error: Entity doesnt have this component");
-        return ComponentArray[EntityToIndex[e]];
-    }
-
     template <typename T>
-    void ComponentArray<T>::RemoveData(Entity e) {
+    void ComponentArray<T>::RemoveComponent(Entity e) {
         GARNISH_VALID_ENTITY();
         assert(EntityToIndex.find(e) != EntityToIndex.end() &&
                 "Error: Entity doesnt have this component");
@@ -42,11 +34,19 @@ namespace garnish {
         CurrentIndex--;
     }
 
+    template <typename T> 
+    T &ComponentArray<T>::GetComponent(Entity e) {
+        GARNISH_VALID_ENTITY();
+        assert(EntityToIndex.find(e) != EntityToIndex.end() &&
+                "Error: Entity doesnt have this component");
+        return ComponentArray[EntityToIndex[e]];
+    }
+
     template <typename T>
     void ComponentArray<T>::EntityDestroyed(Entity entity) {
         if (EntityToIndex.find(entity) != EntityToIndex.end()) {
             // Remove the entity's component if it existed
-            RemoveData(entity);
+            RemoveComponent(entity);
         }
     }
     
@@ -75,17 +75,17 @@ namespace garnish {
     template<typename T>
     void ComponentManager::AddComponent(Entity entity, T component) {
         // Add a component to the array for an entity
-        GetComponentArray<T>()->AddData(entity, component);
+        GetComponentArray<T>()->AddComponent(entity, component);
     }
     template<typename T>
     void ComponentManager::RemoveComponent(Entity entity) {
         // Remove a component from the array for an entity
-        GetComponentArray<T>()->RemoveData(entity);
+        GetComponentArray<T>()->RemoveComponent(entity);
     }
     template<typename T>
     T& ComponentManager::GetComponent(Entity entity) {
         // Get a reference to a component from the array for an entity
-        return GetComponentArray<T>()->GetData(entity);
+        return GetComponentArray<T>()->GetComponent(entity);
     }
 
     template<typename T>

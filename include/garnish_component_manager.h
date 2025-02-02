@@ -8,24 +8,27 @@
 
 namespace garnish {
     class IComponentArray {
+    public:
         // The one instance of virtual inheritance in the entire implementation.
         // An interface is needed so that the ComponentManager (seen later)
         // can tell a generic ComponentArray that an entity has been destroyed
         // and that it needs to update its array mappings.
-        public:
+
         virtual ~IComponentArray() = default;
         virtual void EntityDestroyed(Entity entity) = 0;
     };
 
     template<typename T>
     class ComponentArray : public IComponentArray {
-        public:
-        void AddData(Entity e, T component);
-        T &GetData(Entity e);
-        void RemoveData(Entity e);
+    public:
+        void AddComponent(Entity e, T component);
+        void RemoveComponent(Entity e);
+
+        T &GetComponent(Entity e);
+
         void EntityDestroyed(Entity entity) override;
 
-        private: 
+    private: 
         std::array<T, MAX_ENTITIES> ComponentArray;
 
         std::unordered_map<Entity, std::size_t> EntityToIndex;
