@@ -10,13 +10,13 @@ namespace garnish {
 
     template<typename T>
     void ECSManager::RegisterComponent() {
-        componentManager->RegisterComponent<T>();
+        componentManager.RegisterComponent<T>();
     }
 
     template<typename T>
     void ECSManager::AddComponent(Entity e, T component) {
-        componentManager->AddComponent<T>(e,component); 
-        entityManager->SetSignature(e, componentManager->GetComponentType<T>());
+        componentManager.AddComponent<T>(e,component); 
+        entityManager.SetSignature(e, componentManager.GetComponentType<T>());
     }
     template<typename T>
     void ECSManager::AddComponents(Entity e, T component) {
@@ -36,14 +36,14 @@ namespace garnish {
 
     template<typename T, typename... Components>
     Signature ECSManager::GetSignature(Signature s) {
-        s.set(componentManager->GetComponentType<T>());
+        s.set(componentManager.GetComponentType<T>());
         return GetSignature<Components...>(s);
     }
 
     template<typename T, typename... Components>
     Signature ECSManager::GetSignature() {
         Signature s;
-        s.set(componentManager->GetComponentType<T>());
+        s.set(componentManager.GetComponentType<T>());
         return GetSignature<Components...>(s);
     }
 
@@ -54,11 +54,11 @@ namespace garnish {
     
     template<typename T>
     ComponentType ECSManager::GetComponentType() {
-        return componentManager->GetComponentType<T>();
+        return componentManager.GetComponentType<T>();
     }
 
     template<typename T>
     T& ECSManager::GetComponent(Entity e) {
-        return componentManager->GetComponent<T>(e);
+        return componentManager.GetComponent<T>(e);
     }
 }

@@ -9,8 +9,6 @@
 namespace garnish {
     class ECSManager {
     public:
-        ECSManager();
-
         Entity CreateEntity();
         template<typename... Components> Entity CreateEntityWithComponents(Components... components);
         void DestroyEntity(Entity& e);
@@ -34,8 +32,8 @@ namespace garnish {
         void AddPlugin(void (*plugin)(ECSManager*));
 
     private:
-        std::unique_ptr<EntityManager> entityManager;
-        std::unique_ptr<ComponentManager> componentManager;
+        EntityManager entityManager{ };
+        ComponentManager componentManager{ };
     };
 }
 
