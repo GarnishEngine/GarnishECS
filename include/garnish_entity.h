@@ -6,7 +6,7 @@
 
 namespace garnish {
     class EntityManager {
-        public:
+    public:
         EntityManager();
 
         Entity NewEntity();
@@ -15,10 +15,10 @@ namespace garnish {
         std::vector<Entity> GetEntities(Signature s);
         void RemoveEntity(Entity e);
 
-        private:
+    private:
         // Queue with available entity id's
         std::deque<Entity> AvailableEntities;
 
-        std::array<Signature,MAX_ENTITIES> Signatures;
+        std::array<Signature, MAX_ENTITIES> Signatures;
     };
 }
