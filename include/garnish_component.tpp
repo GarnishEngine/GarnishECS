@@ -56,10 +56,8 @@ namespace garnish {
         const char* typeName = typeid(T).name();
         assert(ComponentTypes.find(typeName) == ComponentTypes.end() && "Error: Component is already registered");
         // Create new ComponentType
-        // ComponentTypes.insert(typeName, NextComponentType);
         ComponentTypes[typeName] = NextComponentType;
         // Create new ComponentArray
-        // ComponentArrays.insert(typeName, std::make_shared<ComponentArray<T>>());
         std::shared_ptr<ComponentArray<T>> ptr = std::make_shared<ComponentArray<T>>();
         ComponentArrays[typeName] = ptr;
         NextComponentType++;
@@ -67,12 +65,12 @@ namespace garnish {
 
     template<typename T>
     ComponentType ComponentManager::GetComponentType() {
-          const char* typeName = typeid(T).name();
+        const char* typeName = typeid(T).name();
 
-          assert(ComponentTypes.find(typeName) != ComponentTypes.end() && "Component not registered before use.");
+        assert(ComponentTypes.find(typeName) != ComponentTypes.end() && "Component not registered before use.");
 
-          // Return this component's type - used for creating signatures
-          return ComponentTypes[typeName];
+        // Return this component's type - used for creating signatures
+        return ComponentTypes[typeName];
     }
 
     template<typename T>

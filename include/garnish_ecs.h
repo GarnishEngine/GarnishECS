@@ -8,29 +8,31 @@
 
 namespace garnish {
     class ECSManager {
-        public:
-        ECSManager(); 
+    public:
+        ECSManager();
 
-        void AddPlugin(void (*plugin)(ECSManager*));
-
-        template<typename... Components> std::vector<Entity> GetEntities();
-        std::vector<Entity> GetEntities(Signature s);
         Entity NewEntity();
+        template<typename... Components> Entity NewEntityWithComponents(Components... components);
+
+        template<typename T> void NewComponent();
+
+        template<typename T> void AddComponent(Entity e, T component);
+        template<typename T> void AddComponents(Entity e, T component);
+        template<typename T, typename... Components> void AddComponents(Entity e, T first, Components... rest);
 
         template<typename... Components> Signature GetSignature(Signature s);
         template<typename T, typename... Components> Signature GetSignature(Signature s);
         template<typename T, typename... Components> Signature GetSignature();
 
-        template<typename T> void NewComponent();
+        template<typename... Components> std::vector<Entity> GetEntities();
+        std::vector<Entity> GetEntities(Signature s);
+
         template<typename T> ComponentType GetComponentType();
         template<typename T> T& GetComponent(Entity e);
 
-        template<typename T> void AddComponent(Entity e, T component);
-        template<typename T> void AddComponents(Entity e, T component);
-        template<typename T, typename... Components> void AddComponents(Entity e, T first, Components... rest);
-        template<typename... Components> Entity NewEntityWithComponents(Components... components);
+        void AddPlugin(void (*plugin)(ECSManager*));
 
-        private:
+    private:
         std::unique_ptr<EntityManager> entityManager;
         std::unique_ptr<ComponentManager> componentManager;
     };
