@@ -7,6 +7,15 @@
 #include "garnish_ecs_common.h"
 
 namespace garnish {
+    using ComponentId = size_t;
+
+    inline ComponentId g_NextComponentId{ 0 };
+
+    template<typename T>
+    struct ComponentInfo {
+        const static inline ComponentId id{ g_NextComponentId++ };
+    };
+
     class IComponentArray {
     public:
         // The one instance of virtual inheritance in the entire implementation.
@@ -51,10 +60,10 @@ namespace garnish {
         void EntityDestroyed(Entity entity);
 
     private:
-        std::unordered_map<const char*, ComponentType> ComponentTypes;
-        std::unordered_map<const char*, std::shared_ptr<IComponentArray>> ComponentArrays;
+        ComponentType NextComponentType{ };
 
-        ComponentType NextComponentType{};
+        std::unordered_map<ComponentId, ComponentType> ComponentTypes;
+        std::unordered_map<ComponentId, std::shared_ptr<IComponentArray>> ComponentArrays;
 
         // Convenience function to get the statically casted pointer to the ComponentArray of type T.
         template<typename T> std::shared_ptr<ComponentArray<T>> GetComponentArray();

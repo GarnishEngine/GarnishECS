@@ -49,16 +49,16 @@ namespace garnish {
             RemoveComponent(entity);
         }
     }
-    
+
     template<typename T> 
     void ComponentManager::RegisterComponent() {
-        const char* typeName = typeid(T).name();
-        assert(ComponentTypes.find(typeName) == ComponentTypes.end() && "Error: Component is already registered");
+        ComponentId id = ComponentInfo<T>::id;
+        assert(ComponentTypes.find(id) == ComponentTypes.end() && "Error: Component is already registered");
         // Create new ComponentType
-        ComponentTypes[typeName] = NextComponentType;
+        ComponentTypes[id] = NextComponentType;
         // Create new ComponentArray
         std::shared_ptr<ComponentArray<T>> ptr = std::make_shared<ComponentArray<T>>();
-        ComponentArrays[typeName] = ptr;
+        ComponentArrays[id] = ptr;
         NextComponentType++;
     }
 
@@ -76,12 +76,10 @@ namespace garnish {
 
     template<typename T>
     ComponentType ComponentManager::GetComponentType() {
-        const char* typeName = typeid(T).name();
-
-        assert(ComponentTypes.find(typeName) != ComponentTypes.end() && "Component not registered before use.");
+        assert(ComponentTypes.find(ComponentInfo<T>::id) != ComponentTypes.end() && "Component not registered before use.");
 
         // Return this component's type - used for creating signatures
-        return ComponentTypes[typeName];
+        return ComponentTypes[ComponentInfo<T>::id];
     }
 
     template<typename T>
@@ -92,10 +90,8 @@ namespace garnish {
 
     template<typename T>
     std::shared_ptr<ComponentArray<T>> ComponentManager::GetComponentArray() {
-        const char* typeName = typeid(T).name();
+        assert(ComponentTypes.find(ComponentInfo<T>::id) != ComponentTypes.end() && "Error: Component not registered before use.");
 
-        assert(ComponentTypes.find(typeName) != ComponentTypes.end() && "Error: Component not registered before use.");
-
-        return std::static_pointer_cast<ComponentArray<T>>(ComponentArrays[typeName]);
+        return std::static_pointer_cast<ComponentArray<T>>(ComponentArrays[ComponentInfo<T>::id]);
     }
 } 
