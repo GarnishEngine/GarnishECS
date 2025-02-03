@@ -8,6 +8,14 @@ namespace garnish {
         return e;
     }
 
+    template<typename T> 
+    bool ECSManager::HasComponent(Entity e) {
+        Signature entSig = entityManager.GetSignature(e);
+        Signature compSig = GetSignature<T>();
+
+        return (compSig & entSig) == compSig;
+    }
+
     template<typename T>
     void ECSManager::RegisterComponent() {
         componentManager.RegisterComponent<T>();

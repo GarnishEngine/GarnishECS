@@ -32,7 +32,7 @@ namespace garnish {
 
     Signature EntityManager::GetSignature(Entity e) {
         GARNISH_VALID_ENTITY();
-        assert(std::find(AvailableEntities.begin(), AvailableEntities.end(), e) != AvailableEntities.end() && "Error: Entity Not registered");
+        assert(std::find(AvailableEntities.begin(), AvailableEntities.end(), e) == AvailableEntities.end() && "Error: Entity Not registered");
 
         return Signatures[e];
     }
