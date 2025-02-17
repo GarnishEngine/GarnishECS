@@ -6,8 +6,8 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Settings
-option(_BUILD_EXAMPLES "Build Examples" ON)
-option(_BUILD_UNIT_TESTS "Build Unit Tests" ON)
+option(_BUILD_EXAMPLES "Build Examples" OFF)
+option(_BUILD_UNIT_TESTS "Build Unit Tests" OFF)
 
 # Add include directory
 include_directories("include")
