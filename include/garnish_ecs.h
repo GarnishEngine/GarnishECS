@@ -29,7 +29,7 @@ namespace garnish {
         std::vector<Entity> GetEntities(Signature s);
 
         template<typename T> ComponentType GetComponentType();
-        template<typename T> T& GetComponent(Entity e);
+        template<typename T> std::shared_ptr<T> GetComponent(Entity e);
 
         void AddPlugin(void (*plugin)(ECSManager*));
 
