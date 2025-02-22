@@ -1,13 +1,14 @@
 #include "garnish_ecs.h"
 #include <iostream>
+#include <memory>
 #include <string>
 
 struct Person {
     std::string name;
 };
 
-void greet(Person& p) {
-    std::cout << "Hello, " << p.name << "!\n";
+void greet(std::shared_ptr<Person> p) {
+    std::cout << "Hello, " << p->name << "!\n";
 }
 
 int main (void) {
@@ -27,7 +28,7 @@ int main (void) {
 
     auto entities = ecs.GetEntities<Person>();
     for (auto entity : entities) {
-        Person& p = ecs.GetComponent<Person>(entity);
+        std::shared_ptr<Person> p = ecs.GetComponent<Person>(entity);
         greet(p);
     }
 

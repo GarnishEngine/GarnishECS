@@ -66,7 +66,7 @@ namespace garnish {
     }
 
     template<typename T>
-    T& ECSManager::GetComponent(Entity e) {
+    std::shared_ptr<T> ECSManager::GetComponent(Entity e) {
         return componentManager.GetComponent<T>(e);
     }
 }
