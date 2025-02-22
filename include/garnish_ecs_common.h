@@ -1,6 +1,7 @@
 #pragma once
 #include <cstdint>
 #include <bitset>
+#include <functional>
 
 namespace garnish {
     using Entity = std::uint32_t;
@@ -13,5 +14,9 @@ namespace garnish {
     using Signature = std::bitset<MAX_COMPONENTS>;
 
     #define GARNISH_VALID_ENTITY() assert(e < MAX_ENTITIES && e >= 0 && "Error: Invalid entity ID")
+
+    class ECSManager;
+
+    using System = std::function<void(ECSManager*)>;
 }
 

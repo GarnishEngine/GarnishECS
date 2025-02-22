@@ -33,9 +33,14 @@ namespace garnish {
 
         void AddPlugin(void (*plugin)(ECSManager*));
 
+        void AddSystem(System system);
+
+        void ExecuteSystems();
+
     private:
         EntityManager entityManager{ };
         ComponentManager componentManager{ };
+        std::vector<System> systems{ };
     };
 }
 
