@@ -22,17 +22,17 @@ namespace garnish {
     }
 
     template<typename T>
-    void ECSManager::AddComponent(Entity e, T component) {
+    void ECSManager::AddComponent(Entity e, T& component) {
         componentManager.AddComponent<T>(e,component); 
         entityManager.SetSignature(e, componentManager.GetComponentType<T>());
     }
     template<typename T>
-    void ECSManager::AddComponents(Entity e, T component) {
+    void ECSManager::AddComponents(Entity e, T& component) {
         AddComponent(e,component);
     }
 
     template<typename T, typename... Components>
-    void ECSManager::AddComponents(Entity e, T first, Components... rest) {
+    void ECSManager::AddComponents(Entity e, T& first, Components&... rest) {
         AddComponent(e,first);
         AddComponents(e,rest...);
     }

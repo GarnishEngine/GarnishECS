@@ -17,9 +17,9 @@ namespace garnish {
 
         template<typename T> void RegisterComponent();
 
-        template<typename T> void AddComponent(Entity e, T component);
-        template<typename T> void AddComponents(Entity e, T component);
-        template<typename T, typename... Components> void AddComponents(Entity e, T first, Components... rest);
+        template<typename T> void AddComponent(Entity e, T& component);
+        template<typename T> void AddComponents(Entity e, T& component);
+        template<typename T, typename... Components> void AddComponents(Entity e, T& first, Components&... rest);
 
         template<typename... Components> Signature GetSignature(Signature s);
         template<typename T, typename... Components> Signature GetSignature(Signature s);
