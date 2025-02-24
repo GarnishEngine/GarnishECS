@@ -35,11 +35,11 @@ namespace garnish {
     }
 
     template <typename T> 
-    T &ComponentArray<T>::GetComponent(Entity e) {
+    std::shared_ptr<T> ComponentArray<T>::GetComponent(Entity e) {
         GARNISH_VALID_ENTITY();
         assert(EntityToIndex.find(e) != EntityToIndex.end() &&
                 "Error: Entity doesnt have this component");
-        return ComponentArray[EntityToIndex[e]];
+        return std::make_shared<T>(ComponentArray[EntityToIndex[e]]);
     }
 
     template <typename T>
@@ -83,7 +83,7 @@ namespace garnish {
     }
 
     template<typename T>
-    T& ComponentManager::GetComponent(Entity entity) {
+    std::shared_ptr<T> ComponentManager::GetComponent(Entity entity) {
         // Get a reference to a component from the array for an entity
         return GetComponentArray<T>()->GetComponent(entity);
     }

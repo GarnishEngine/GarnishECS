@@ -16,4 +16,14 @@ namespace garnish {
     void ECSManager::AddPlugin(void (*plugin)(ECSManager*)) {
         plugin(this);
     }
+
+    void ECSManager::AddSystem(System system) {
+        systems.push_back(system);
+    }
+
+    void ECSManager::ExecuteSystems() {
+        for (auto& system : systems) {
+            system(this);
+        }
+    }
 }
