@@ -22,7 +22,8 @@ int main (void) {
 
     assert(!ecs.HasComponent<A>(e) && "Entity has component that has not been added to it");
 
-    ecs.AddComponent<A>(e);
+    A a{};
+    ecs.AddComponent<A>(e, a);
 
     assert(ecs.HasComponent<A>(e) && "Entity does not have component just added to it");
 }
