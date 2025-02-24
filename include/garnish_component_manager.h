@@ -33,7 +33,7 @@ namespace garnish {
         void AddComponent(Entity e, T component);
         void RemoveComponent(Entity e);
 
-        std::shared_ptr<T> GetComponent(Entity e);
+        T& GetComponent(Entity e);
 
         void EntityDestroyed(Entity entity) override;
 
@@ -55,7 +55,7 @@ namespace garnish {
 
         template<typename T> ComponentType GetComponentType();
 
-        template<typename T> std::shared_ptr<T> GetComponent(Entity entity);
+        template<typename T> T& GetComponent(Entity entity);
         
         void EntityDestroyed(Entity entity);
 
