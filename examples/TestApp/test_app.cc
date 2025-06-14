@@ -1,36 +1,70 @@
-#include "garnish_ecs.h"
+#include "ecs_common.h"
+#include "ecs_controller.h"
 #include <iostream>
 #include <memory>
 #include <string>
 
+using namespace garnish;
+
 struct Person {
     std::string name;
+    int health;
 };
 
-void greet(std::shared_ptr<Person> p) {
-    std::cout << "Hello, " << p->name << "!\n";
+struct Sword {
+};
+
+void greet(Person& p) {
+    std::cout << p.name << " has " << p.health << " health!\n";
 }
 
+struct person_sys : System {
+    void update(ECSController& world) override {
+        for (Entity entity : world.get_entities<Person>()) {
+            greet(world.get_component<Person>(entity));
+            
+        }
+    }
+};
+
+struct sword_sys : System {
+    void update(ECSController& world) override {
+        for (Entity entity : world.get_entities<Person, Sword>()) {
+            std::cout << world.get_component<Person>(entity).name << " has sword!\n";
+        }
+    }
+};
 int main (void) {
-    garnish::ECSManager ecs;
+    ECSController ecs;
 
     Person bob = {
-        .name = "Bob"
+        .name = "Bob",
+        .health = 3
     };
 
     Person peter = {
-        .name = "Peter"
+        .name = "Peter",
+        .health = 5
     };
 
-    ecs.RegisterComponent<Person>();
-    auto e1 = ecs.CreateEntityWithComponents<Person>(bob);
-    auto e2 = ecs.CreateEntityWithComponents<Person>(peter);
+    ecs.register_component<Person>();
+        ecs.register_component<Sword>();
 
-    auto entities = ecs.GetEntities<Person>();
-    for (auto entity : entities) {
-        std::shared_ptr<Person> p = ecs.GetComponent<Person>(entity);
-        greet(p);
-    }
+
+
+    auto e1 = ecs.create_entity_with_components(bob, Sword{});
+    auto e2 = ecs.create_entity_with_components(peter);
+    ecs.register_system<person_sys>(0);
+    ecs.register_system<sword_sys>(0);
+
+
+    ecs.update_all();
+
+    // auto entities = ecs.get_entities<Person>();
+    // for (auto entity : entities) {
+    //     Person& p = ecs.get_component<Person>(entity);
+    //     greet(p);
+    // }
 
     return 0;
 }

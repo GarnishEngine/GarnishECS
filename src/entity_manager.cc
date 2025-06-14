@@ -1,8 +1,4 @@
-#include "garnish_entity_manager.h"
-#include <algorithm>
-#include <cassert>
-#include <cstddef>
-#include <iostream>
+#include "entity_manager.h"
 
 namespace garnish {
     EntityManager::EntityManager() {
@@ -11,7 +7,7 @@ namespace garnish {
         }
     }
 
-    Entity EntityManager::CreateEntity() {
+    Entity EntityManager::create_entity() {
         assert(!AvailableEntities.empty() && "Error: Exceeded maximum entity count");
 
         Entity e = AvailableEntities.front();
@@ -19,9 +15,8 @@ namespace garnish {
         return e;
     }
 
-    void EntityManager::DestroyEntity(Entity& e) {
+    void EntityManager::destroy_entity(Entity& e) {
         GARNISH_VALID_ENTITY();
-        // Check if the entity id is valid and not available, this is why we use a deque instead of a queue
         assert(std::find(AvailableEntities.begin(), AvailableEntities.end(), e) == AvailableEntities.end() && "Error: Entity already available");
         
         Signatures[e] = 0;
@@ -30,21 +25,21 @@ namespace garnish {
         e = DEAD_ENTITY;
     }
 
-    Signature EntityManager::GetSignature(Entity e) {
+    Signature EntityManager::get_entity_signature(Entity e) {
         GARNISH_VALID_ENTITY();
-        assert(std::find(AvailableEntities.begin(), AvailableEntities.end(), e) == AvailableEntities.end() && "Error: Entity Not registered");
+        assert(std::find(AvailableEntities.begin(), AvailableEntities.end(), e) == AvailableEntities.end() && "Error: Entity not registered");
 
         return Signatures[e];
     }
 
-    void EntityManager::SetSignature(Entity e, ComponentType component) {
+    void EntityManager::set_entity_signature(Entity e, ComponentType component) {
         GARNISH_VALID_ENTITY();
 
         Signatures[e].set(component);
     }
 
-    std::vector<Entity> EntityManager::GetEntities(Signature s) {
-        assert(s != 0 && "Error: cannot get empty entities, ensure your entity has a component or change your querry signature");
+    std::vector<Entity> EntityManager::get_entities(Signature s) {
+        assert(s.any() && "Error: cannot get empty entities");
 
         std::vector<Entity> entities;
         for (Entity i = 0; i < AvailableEntities.front(); i++) {

@@ -2,17 +2,17 @@
 #include <string>
 #include <limits>
 
-#include "garnish_ecs.h"
+#include "ecs_controller.h"
 
 int main (void) {
-    garnish::ECSManager ecs;
+    garnish::ECSController ecs;
 
     garnish::Entity ent = garnish::DEAD_ENTITY;
-    ent = ecs.CreateEntity();
+    ent = ecs.create_entity();
 
     assert(ent != garnish::DEAD_ENTITY && "First entity created is not dead");
 
-    ecs.DestroyEntity(ent);
+    ecs.destroy_entity(ent);
 
     assert(ent == garnish::DEAD_ENTITY && "Killed entity is dead");
 }

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22)
 project(GarnishECS)
 
 # Set the C++ standard
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Settings
@@ -13,14 +13,25 @@ option(_BUILD_UNIT_TESTS "Build Unit Tests" ON)
 include_directories("include")
 
 # Add the source files
-file(GLOB_RECURSE SOURCE_FILES "src/*.cc")
+file(GLOB_RECURSE SOURCE_FILES "src/*.cc"
+                               "src/*.tpp")
+
+option(ENABLE_SANITIZERS "Enable address/UB sanitizers" OFF)
+if(ENABLE_SANITIZERS AND CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
+    add_library(sanitizers INTERFACE)
+    target_compile_options(sanitizers INTERFACE
+        -fsanitize=address,undefined -fno-omit-frame-pointer)
+    target_link_options(sanitizers INTERFACE
+        -fsanitize=address,undefined)
+    link_libraries(sanitizers)
+endif()
 
 # Create the library target
 add_library(GarnishECS STATIC ${SOURCE_FILES})
 
 # Set the library properties
 set_target_properties(GarnishECS PROPERTIES
-  PUBLIC_HEADER "include/GarnishECS/garnish_ecs.h"
+  PUBLIC_HEADER "include/GarnishECS/ecs.h"
 )
 
 # Install the library and headers

@@ -2,7 +2,7 @@
 #include <string>
 #include <limits>
 
-#include "garnish_ecs.h"
+#include "ecs_controller.h"
 
 struct A { 
     A() {
@@ -17,22 +17,23 @@ struct A {
 };
 
 int main (void) {
-    garnish::ECSManager ecs;
-    ecs.RegisterComponent<A>();
+    garnish::ECSController ecs;
+    ecs.register_component<A>();
 
-    auto e = ecs.CreateEntity();
+    auto e = ecs.create_entity();
 
-    assert(!ecs.HasComponent<A>(e) && "Entity has component that has not been added to it");
+    assert(!ecs.has_component<A>(e) && "Entity has component that has not been added to it");
+    A a = A{};
+    ecs.add_component(e, a);
 
-    A a{};
     a.val = 0;
-    ecs.AddComponent<A>(e, a);
 
-    assert(ecs.HasComponent<A>(e) && "Entity does not have component just added to it");
+    assert(ecs.has_component<A>(e) && "Entity does not have component just added to it");
 
-    assert(ecs.GetComponent<A>(e).val == 0 && "Component does not have correct default value");
+    assert(ecs.get_component<A>(e).val == 0 && "Component does not have correct default value");
 
-    ecs.GetComponent<A>(e).val = 3;
+    ecs.get_component<A>(e).val = 3;
 
-    assert(ecs.GetComponent<A>(e).val == 3 && "Component does not have correct value after it was assigned");
+    assert(ecs.get_component<A>(e).val == 3 && "Component does not have correct value after it was assigned");
+    assert(ecs.has_component<A>(e) && "Entity does not have component just added to it");
 }

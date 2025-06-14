@@ -1,6 +1,9 @@
 #pragma once
 #include <cstdint>
 #include <bitset>
+#include <cassert>
+#include <cstddef>
+#include <type_traits> 
 #include <functional>
 
 namespace garnish {
@@ -9,14 +12,14 @@ namespace garnish {
     
     constexpr Entity MAX_ENTITIES = 5000;
     constexpr Entity DEAD_ENTITY = MAX_ENTITIES + 1;
-    constexpr ComponentType MAX_COMPONENTS = 32;
+    constexpr ComponentType MAX_COMPONENTS = 64;
 
     using Signature = std::bitset<MAX_COMPONENTS>;
 
     #define GARNISH_VALID_ENTITY() assert(e < MAX_ENTITIES && e >= 0 && "Error: Invalid entity ID")
 
-    class ECSManager;
+    class ECSController;
 
-    using System = std::function<void(ECSManager*)>;
+    // using System = std::function<void(ECSManager*)>;
 }
 

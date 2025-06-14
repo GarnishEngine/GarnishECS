@@ -51,3 +51,6 @@ build/
 examples/TestApp/TestApp
 tests/basicComponentTest/BasicComponentTest
 tests/entityTest/EntityTest
+.DS_Store
+build-rel/
+.clang*
