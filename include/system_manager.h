@@ -15,6 +15,7 @@ namespace garnish {
         void entity_destroyed(Entity entity);
         void entity_signature_changed(Entity entity, Signature signature);
         void update_all(ECSController &world);
+        
     private:
         std::unordered_map<std::size_t, Signature> signatures;
         std::unordered_map<std::size_t, std::shared_ptr<System>> systems;

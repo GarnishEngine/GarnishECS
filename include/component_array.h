@@ -1,17 +1,16 @@
 #pragma once
 #include "ecs_common.h"
 
-
 namespace garnish {
     template<typename T> class ComponentArray;
     class IComponentArray;
     using ComponentId = size_t;
     
     class ComponentInfo {
-        static inline ComponentId g_NextComponentId{0};
+        static inline ComponentId nextComponentId{0};
     public:    
         template <typename T>
-        static inline const ComponentId id = g_NextComponentId++;
+        static inline const ComponentId id = nextComponentId++;
     };
 
     class IComponentArray {
@@ -23,18 +22,18 @@ namespace garnish {
     template<typename T>
     class ComponentArray : public IComponentArray {
     public:
-        auto add_component(Entity e, T component) -> void;
-        auto remove_component(Entity e) -> void;
-        auto get_component(Entity e) -> T&;
+        auto add_component(Entity entity, T component) -> void;
+        auto remove_component(Entity entity) -> void;
+        auto get_component(Entity entity) -> T&;
 
         auto entity_destroyed(Entity entity) -> void override;
     private: 
-        std::array<std::decay_t<T>, MAX_ENTITIES> ComponentArray;
+        std::array<std::decay_t<T>, MAX_ENTITIES> componentArray;
 
-        std::unordered_map<Entity, std::size_t> EntityToIndex;
-        std::unordered_map<std::size_t, Entity> IndexToEntity;
+        std::unordered_map<Entity, std::size_t> entityToIndex;
+        std::unordered_map<std::size_t, Entity> indexToEntity;
 
-        std::size_t CurrentIndex = 0;
+        std::size_t currentIndex = 0;
     };
 }
 

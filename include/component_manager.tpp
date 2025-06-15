@@ -10,10 +10,10 @@ namespace garnish {
         using U = std::decay_t<T>;
         ComponentId id = ComponentInfo::id<U>;
 
-        assert(!ComponentTypes.contains(id));
+        assert(!componentTypes.contains(id));
 
-        ComponentTypes[id]  = NextComponentType++;
-        ComponentArrays[id] = std::make_shared<ComponentArray<U>>();
+        componentTypes[id]  = nextComponentType++;
+        componentArrays[id] = std::make_shared<ComponentArray<U>>();
     }
 
     template<typename T>
@@ -33,8 +33,8 @@ namespace garnish {
     ComponentType ComponentManager::get_component_type() {
         using U = std::decay_t<T>;
         auto id = ComponentInfo::id<U>;
-        assert(ComponentTypes.contains(id));
-        return ComponentTypes.at(id);
+        assert(componentTypes.contains(id));
+        return componentTypes.at(id);
     }
 
     template<typename T>
@@ -48,12 +48,12 @@ namespace garnish {
     ComponentManager::get_component_array() {
         using U = std::decay_t<T>;
         auto id = ComponentInfo::id<U>;
-        assert(ComponentTypes.contains(id));
-        return std::static_pointer_cast<ComponentArray<U>>(ComponentArrays.at(id));
+        assert(componentTypes.contains(id));
+        return std::static_pointer_cast<ComponentArray<U>>(componentArrays.at(id));
     }
 
     inline void ComponentManager::entity_destroyed(Entity entity) {
-        for (auto const& [id, array] : ComponentArrays) {
+        for (auto const& [id, array] : componentArrays) {
             array->entity_destroyed(entity);
         }
     }

@@ -19,7 +19,5 @@ namespace garnish {
     #define GARNISH_VALID_ENTITY() assert(e < MAX_ENTITIES && e >= 0 && "Error: Invalid entity ID")
 
     class ECSController;
-
-    // using System = std::function<void(ECSManager*)>;
 }
 
