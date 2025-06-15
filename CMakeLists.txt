@@ -31,7 +31,7 @@ add_library(GarnishECS STATIC ${SOURCE_FILES})
 
 # Set the library properties
 set_target_properties(GarnishECS PROPERTIES
-  PUBLIC_HEADER "include/GarnishECS/ecs.h"
+  PUBLIC_HEADER "include/GarnishECS/ecs_controller.h"
 )
 
 # Install the library and headers
