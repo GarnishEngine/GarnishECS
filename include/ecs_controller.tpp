@@ -12,7 +12,7 @@ namespace garnish {
         return e;
     }
 
-    Entity ECSController::create_entity() {
+    inline Entity ECSController::create_entity() {
         return entityManager->create_entity();
     }
 
@@ -21,11 +21,11 @@ namespace garnish {
         return get_entities(get_signature<Components...>());
     }
 
-    std::vector<Entity> ECSController::get_entities(Signature s) {
+    inline std::vector<Entity> ECSController::get_entities(Signature s) {
         return entityManager->get_entities(s);
     }
 
-    void ECSController::destroy_entity(Entity& e) {
+    inline void ECSController::destroy_entity(Entity& e) {
         entityManager->destroy_entity(e);
     }
     
@@ -80,7 +80,7 @@ namespace garnish {
         systemManager->set_signature<T>(signature);
     }
 
-    void ECSController::update_all() {
+    inline void ECSController::update_all() {
         systemManager->update_all(*this);
     }
 
@@ -89,7 +89,7 @@ namespace garnish {
         return data[name];
     }
 
-    void ECSController::store_data(const std::string &name, std::any value) {
+    inline void ECSController::store_data(const std::string &name, std::any value) {
         data[name] = std::move(value);
     }
 

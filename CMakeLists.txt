@@ -13,8 +13,7 @@ option(_BUILD_UNIT_TESTS "Build Unit Tests" ON)
 include_directories("include")
 
 # Add the source files
-file(GLOB_RECURSE SOURCE_FILES "src/*.cc"
-                               "src/*.tpp")
+file(GLOB_RECURSE SOURCE_FILES "src/*.cc")
 
 option(ENABLE_SANITIZERS "Enable address/UB sanitizers" OFF)
 if(ENABLE_SANITIZERS AND CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")

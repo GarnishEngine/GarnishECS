@@ -20,13 +20,13 @@ namespace garnish {
         signatures[idx] = std::move(signature);
     }
 
-    void SystemManager::entity_destroyed(Entity entity) {
+    inline void SystemManager::entity_destroyed(Entity entity) {
         for (const auto &[_, system] : systems) {
             system->entities.erase(entity);
         }
     }
 
-    void SystemManager::entity_signature_changed(Entity entity, Signature signature) {
+    inline void SystemManager::entity_signature_changed(Entity entity, Signature signature) {
         for (const auto &[type_name, system] : systems) {
             const auto &system_signature = signatures[type_name];
             // If system signature matches new signature (no change), keep/add entity
@@ -38,7 +38,7 @@ namespace garnish {
             }
         }
     }
-    void SystemManager::update_all(ECSController &world) {
+    inline void SystemManager::update_all(ECSController &world) {
         for (auto &[_, system_list] : systems_by_priority) {
             for (auto &system : system_list) {
                 system->update(world);
