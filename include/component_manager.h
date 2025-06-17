@@ -2,6 +2,8 @@
 #include "ecs_common.h"
 #include "component_array.h"
 
+#include <memory>
+
 namespace garnish {
     class ComponentManager {
     public:
