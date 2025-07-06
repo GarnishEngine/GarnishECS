@@ -117,7 +117,7 @@ T* ECSController::try_get() {
 
 template <class T>
 bool ECSController::contains() {
-    resourceManager->contains<T>();
+    return resourceManager->contains<T>();
 }
 
 template <class T>
