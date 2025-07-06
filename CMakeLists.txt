@@ -2,8 +2,12 @@ cmake_minimum_required(VERSION 3.22)
 project(GarnishECS)
 
 # Set the C++ standard
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+# Settings
+option(_BUILD_EXAMPLES "Build Examples" ON)
+option(_BUILD_UNIT_TESTS "Build Unit Tests" ON)
 
 # Add include directory
 include_directories("include")
@@ -16,7 +20,7 @@ add_library(GarnishECS STATIC ${SOURCE_FILES})
 
 # Set the library properties
 set_target_properties(GarnishECS PROPERTIES
-  PUBLIC_HEADER "include/GarnishECS/garnish_ecs.h"
+  PUBLIC_HEADER "include/GarnishECS/ecs_controller.h"
 )
 
 # Install the library and headers
@@ -27,5 +31,11 @@ install(TARGETS GarnishECS
     PUBLIC_HEADER DESTINATION include/GarnishECS)
 
 # Add the test program
-add_executable(GarnishECSTest "tests/main.cc")
-target_link_libraries(GarnishECSTest GarnishECS)
+# Building examples:
+if (_BUILD_EXAMPLES)
+    add_subdirectory("examples")
+endif(_BUILD_EXAMPLES)
+
+if (_BUILD_UNIT_TESTS)
+    add_subdirectory("tests")
+endif(_BUILD_UNIT_TESTS)
