@@ -7,7 +7,7 @@
 #include "system.h"
 
 namespace garnish {
-class SystemManager {
+class SystemManager final {
    public:
     template <typename T, typename... Args>
     std::shared_ptr<T> register_system(int priority, Args&&... args);

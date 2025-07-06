@@ -1,12 +1,12 @@
 #pragma once
+#include <array>
 #include <deque>
 #include <vector>
-#include <array>
 
 #include "ecs_common.h"
 
 namespace garnish {
-class EntityManager {
+class EntityManager final {
    public:
     EntityManager();
 
