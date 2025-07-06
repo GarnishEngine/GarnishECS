@@ -3,6 +3,7 @@
 #include <bitset>
 #include <cassert>
 #include <cstddef>
+#include <cstdint>
 
 namespace garnish {
 using Entity = std::uint32_t;

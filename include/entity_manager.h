@@ -1,6 +1,7 @@
 #pragma once
 #include <deque>
 #include <vector>
+#include <array>
 
 #include "ecs_common.h"
 
