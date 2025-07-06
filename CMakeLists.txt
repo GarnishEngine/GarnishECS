@@ -15,16 +15,6 @@ include_directories("include")
 # Add the source files
 file(GLOB_RECURSE SOURCE_FILES "src/*.cc")
 
-option(ENABLE_SANITIZERS "Enable address/UB sanitizers" OFF)
-if(ENABLE_SANITIZERS AND CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
-    add_library(sanitizers INTERFACE)
-    target_compile_options(sanitizers INTERFACE
-        -fsanitize=address,undefined -fno-omit-frame-pointer)
-    target_link_options(sanitizers INTERFACE
-        -fsanitize=address,undefined)
-    link_libraries(sanitizers)
-endif()
-
 # Create the library target
 add_library(GarnishECS STATIC ${SOURCE_FILES})
 

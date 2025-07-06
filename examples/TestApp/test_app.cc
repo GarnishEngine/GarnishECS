@@ -48,7 +48,7 @@ int main (void) {
     };
 
     ecs.register_component<Person>();
-        ecs.register_component<Sword>();
+    ecs.register_component<Sword>();
 
 
 

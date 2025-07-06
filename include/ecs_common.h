@@ -1,23 +1,21 @@
 #pragma once
-#include <cstdint>
+
 #include <bitset>
 #include <cassert>
 #include <cstddef>
-#include <type_traits> 
-#include <functional>
 
 namespace garnish {
-    using Entity = std::uint32_t;
-    using ComponentType = std::uint8_t;
-    
-    constexpr Entity MAX_ENTITIES = 5000;
-    constexpr Entity DEAD_ENTITY = MAX_ENTITIES + 1;
-    constexpr ComponentType MAX_COMPONENTS = 64;
+using Entity = std::uint32_t;
+using ComponentType = std::uint8_t;
 
-    using Signature = std::bitset<MAX_COMPONENTS>;
+constexpr Entity MAX_ENTITIES = 5000;
+constexpr Entity DEAD_ENTITY = MAX_ENTITIES + 1;
+constexpr ComponentType MAX_COMPONENTS = 64;
 
-    #define GARNISH_VALID_ENTITY() assert(e < MAX_ENTITIES && e >= 0 && "Error: Invalid entity ID")
+using Signature = std::bitset<MAX_COMPONENTS>;
 
-    class ECSController;
-}
+#define GARNISH_VALID_ENTITY() \
+    assert(e < MAX_ENTITIES && e >= 0 && "Error: Invalid entity ID")
 
+class ECSController;
+}  // namespace garnish
