@@ -24,6 +24,9 @@ class ECSController final {
     std::vector<Entity> get_entities();
     std::vector<Entity> get_entities(Signature s);
 
+    template <typename... Components, class F>
+    void for_each(F&& f);
+
     void destroy_entity(Entity& e);
 
     template <typename... Components>

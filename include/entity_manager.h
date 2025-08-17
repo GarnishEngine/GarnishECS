@@ -16,6 +16,15 @@ class EntityManager final {
     Signature get_entity_signature(Entity e);
     void set_entity_signature(Entity e, ComponentType component);
 
+    template <class F>
+    void for_each(Signature required, F&& f) {
+        for (Entity i = 0; i < signatures.size(); ++i) {
+            if ((signatures.at(i) & required) == required) {
+                std::forward<F>(f)(i);
+            }
+        }
+    }
+
    private:
     std::deque<Entity> availableEntities;
     std::array<Signature, MAX_ENTITIES> signatures;

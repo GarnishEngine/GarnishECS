@@ -7,10 +7,10 @@ namespace garnish {
     public: 
         System() = default;
         virtual ~System() = default;
-        System(const System &) noexcept = default;
-        System(System &&) noexcept = default;
-        System &operator=(const System &) noexcept = default;
-        System &operator=(System &&) noexcept = default;
+        System(const System &) noexcept = delete;
+        System(System &&) noexcept = delete;
+        System &operator=(const System &) noexcept = delete;
+        System &operator=(System &&) noexcept = delete;
         
         virtual void update(ECSController& world) = 0;
 

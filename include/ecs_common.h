@@ -15,8 +15,9 @@ constexpr ComponentType MAX_COMPONENTS = 64;
 
 using Signature = std::bitset<MAX_COMPONENTS>;
 
-#define GARNISH_VALID_ENTITY() \
-    assert(e < MAX_ENTITIES && e >= 0 && "Error: Invalid entity ID")
+constexpr void garnish_valid_entity(Entity e) {
+    assert(e < MAX_ENTITIES && e >= 0 && "Error: Invalid entity ID");
+}
 
 class ECSController;
 }  // namespace garnish

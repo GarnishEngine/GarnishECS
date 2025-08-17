@@ -27,6 +27,14 @@ inline std::vector<Entity> ECSController::get_entities(Signature s) {
     return entityManager->get_entities(s);
 }
 
+template <typename... Components, class F>
+void ECSController::for_each(F&& f) {
+    auto sig = get_signature<Components...>();
+    entityManager->for_each(sig, [this, &f](Entity e) mutable {
+        std::forward<F>(f)(e, get_component<Components>(e)...);
+    });
+}
+
 inline void ECSController::destroy_entity(Entity& e) {
     entityManager->destroy_entity(e);
 }
