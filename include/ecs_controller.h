@@ -6,7 +6,6 @@
 #include "ecs_common.h"
 #include "entity_manager.h"
 #include "resource_manager.h"
-#include "system_manager.h"
 
 namespace garnish {
 class ECSController final {
@@ -14,7 +13,6 @@ class ECSController final {
     ECSController()
         : componentManager(std::make_unique<ComponentManager>()),
           entityManager(std::make_unique<EntityManager>()),
-          systemManager(std::make_unique<SystemManager>()),
           resourceManager(std::make_unique<ResourceManager>()) {}
     template <typename... Components>
     Entity create_entity_with_components(Components&&... components);
@@ -43,8 +41,6 @@ class ECSController final {
     template <typename T>
     void register_component();
 
-    template <typename T, typename... Args>
-    std::shared_ptr<T> register_system(int priority, Args&&... args);
 
     template <typename... Components>
     Signature get_signature();
@@ -71,7 +67,6 @@ class ECSController final {
    private:
     std::unique_ptr<EntityManager> entityManager;
     std::unique_ptr<ComponentManager> componentManager;
-    std::unique_ptr<SystemManager> systemManager;
     std::unique_ptr<ResourceManager> resourceManager;
 
     std::unordered_map<std::string, std::any> data;

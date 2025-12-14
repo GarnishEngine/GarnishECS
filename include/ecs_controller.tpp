@@ -83,24 +83,6 @@ Signature ECSController::get_signature() {
     return sig;
 }
 
-template <typename T, typename... Args>
-std::shared_ptr<T>
-ECSController::register_system(int priority, Args&&... args) {
-    return systemManager->register_system<T>(
-        priority,
-        std::forward<Args>(args)...
-    );
-}
-
-template <typename T>
-void ECSController::set_system_signature(Signature signature) {
-    systemManager->set_signature<T>(signature);
-}
-
-inline void ECSController::update_all() {
-    systemManager->update_all(*this);
-}
-
 template <typename T>
 auto ECSController::get_data(const std::string& name) -> T& {
     return data[name];

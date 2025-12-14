@@ -11,7 +11,7 @@ using ComponentType = std::uint8_t;
 
 constexpr Entity MAX_ENTITIES = 5000;
 constexpr Entity DEAD_ENTITY = MAX_ENTITIES + 1;
-constexpr ComponentType MAX_COMPONENTS = 64;
+constexpr ComponentType MAX_COMPONENTS = 2048;
 
 using Signature = std::bitset<MAX_COMPONENTS>;
 
