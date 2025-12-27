@@ -36,6 +36,7 @@ void ECSController::for_each(F&& f) {
 }
 
 inline void ECSController::destroy_entity(Entity& e) {
+    componentManager->entity_destroyed(e);
     entityManager->destroy_entity(e);
 }
 
@@ -76,6 +77,15 @@ void ECSController::add_components(Entity e, Components&&... components) {
     (add_component<Components>(e, std::forward<Components>(components)), ...);
 }
 
+template <typename T>
+void ECSController::remove_component(Entity e) {
+    componentManager->remove_component<T>(e);
+    entityManager->clear_entity_signature(
+        e,
+        componentManager->get_component_type<T>()
+    );
+}
+
 template <typename... Components>
 Signature ECSController::get_signature() {
     Signature sig;
@@ -85,7 +95,7 @@ Signature ECSController::get_signature() {
 
 template <typename T>
 auto ECSController::get_data(const std::string& name) -> T& {
-    return data[name];
+    return std::any_cast<T&>(data.at(name));
 }
 
 inline void ECSController::store_data(const std::string& name, std::any value) {

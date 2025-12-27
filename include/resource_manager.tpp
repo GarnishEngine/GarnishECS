@@ -20,7 +20,7 @@ T& ResourceManager::get() {
 }
 template <class T>
 T* ResourceManager::try_get() {
-    return std::any_cast<T*>(resources.at(typeid(T)));
+    return resources.contains(typeid(T)) ? std::any_cast<T*>(&resources.at(typeid(T))) : nullptr;
 }
 
 template <class T>

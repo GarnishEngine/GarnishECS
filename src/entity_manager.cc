@@ -1,6 +1,7 @@
 #include "entity_manager.h"
 
 #include <algorithm>
+
 #include "ecs_common.h"
 
 namespace garnish {
@@ -47,6 +48,11 @@ void EntityManager::set_entity_signature(Entity e, ComponentType component) {
     garnish_valid_entity(e);
 
     signatures.at(e).set(component);
+}
+
+void EntityManager::clear_entity_signature(Entity e, ComponentType component) {
+    garnish_valid_entity(e);
+    signatures.at(e).reset(component);
 }
 
 std::vector<Entity> EntityManager::get_entities(Signature s) {

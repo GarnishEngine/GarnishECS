@@ -4,15 +4,17 @@
 
 namespace garnish {
 template <typename T>
-void ComponentArray<T>::add_component(Entity e, T component) {
+template <typename U>
+auto ComponentArray<T>::add_component(Entity e, U&& component) -> void
+    requires std::is_same_v<std::decay_t<U>, std::decay_t<T>> {
     garnish_valid_entity(e);
     assert(
         !entityToIndex.contains(e) && "Error: Entity already has this component"
     );
-    std::size_t NextIndex = currentIndex;
-    componentArray[NextIndex] = component;
-    entityToIndex[e] = NextIndex;
-    indexToEntity[NextIndex] = e;
+    assert(currentIndex < MAX_ENTITIES);
+    componentArray[currentIndex] = std::forward<U>(component);
+    entityToIndex[e] = currentIndex;
+    indexToEntity[currentIndex] = e;
     currentIndex++;
 }
 

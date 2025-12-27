@@ -3,11 +3,10 @@
 #include <bitset>
 #include <cassert>
 #include <cstddef>
-#include <cstdint>
 
 namespace garnish {
-using Entity = std::uint32_t;
-using ComponentType = std::uint8_t;
+using Entity = size_t;
+using ComponentType = size_t;
 
 constexpr Entity MAX_ENTITIES = 5000;
 constexpr Entity DEAD_ENTITY = MAX_ENTITIES + 1;

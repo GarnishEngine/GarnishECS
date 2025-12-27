@@ -29,7 +29,7 @@ class ComponentManager final {
     template <typename T>
     std::shared_ptr<ComponentArray<std::decay_t<T>>> get_component_array();
 
-    ComponentType nextComponentType;
+    ComponentType nextComponentType = 0;
 
     std::unordered_map<ComponentId, ComponentType> componentTypes;
     std::unordered_map<ComponentId, std::shared_ptr<IComponentArray>>

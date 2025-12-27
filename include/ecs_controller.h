@@ -1,12 +1,13 @@
 #pragma once
 #include <any>
+#include <string>
+#include <unordered_map>
 #include <vector>
 
 #include "component_manager.h"
 #include "ecs_common.h"
 #include "entity_manager.h"
 #include "resource_manager.h"
-
 namespace garnish {
 class ECSController final {
    public:
@@ -40,14 +41,15 @@ class ECSController final {
     bool has_component(Entity e);
     template <typename T>
     void register_component();
-
+    template <typename T>
+    void remove_component(Entity e);
 
     template <typename... Components>
     Signature get_signature();
     template <typename T>
     void set_system_signature(Signature signature);
 
-    void update_all();
+    // void update_all();
 
     template <class T>
     void set(T&& value);
