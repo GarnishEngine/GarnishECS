@@ -1,23 +1,26 @@
 #pragma once
 #include "component_array.h"
+#include "ecs_common.h"
 
 namespace garnish {
 template <typename T>
-void ComponentArray<T>::add_component(Entity e, T component) {
-    GARNISH_VALID_ENTITY();
+template <typename U>
+auto ComponentArray<T>::add_component(Entity e, U&& component) -> void
+    requires std::is_same_v<std::decay_t<U>, std::decay_t<T>> {
+    garnish_valid_entity(e);
     assert(
         !entityToIndex.contains(e) && "Error: Entity already has this component"
     );
-    std::size_t NextIndex = currentIndex;
-    componentArray[NextIndex] = component;
-    entityToIndex[e] = NextIndex;
-    indexToEntity[NextIndex] = e;
+    assert(currentIndex < MAX_ENTITIES);
+    componentArray[currentIndex] = std::forward<U>(component);
+    entityToIndex[e] = currentIndex;
+    indexToEntity[currentIndex] = e;
     currentIndex++;
 }
 
 template <typename T>
 void ComponentArray<T>::remove_component(Entity e) {
-    GARNISH_VALID_ENTITY();
+    garnish_valid_entity(e);
     assert(
         entityToIndex.contains(e) && "Error: Entity doesn't have this component"
     );
@@ -34,7 +37,7 @@ void ComponentArray<T>::remove_component(Entity e) {
 
 template <typename T>
 T& ComponentArray<T>::get_component(Entity e) {
-    GARNISH_VALID_ENTITY();
+    garnish_valid_entity(e);
     assert(
         entityToIndex.contains(e) && "Error: Entity doesn't have this component"
     );

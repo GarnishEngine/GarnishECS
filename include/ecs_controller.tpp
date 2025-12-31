@@ -27,7 +27,16 @@ inline std::vector<Entity> ECSController::get_entities(Signature s) {
     return entityManager->get_entities(s);
 }
 
+template <typename... Components, class F>
+void ECSController::for_each(F&& f) {
+    auto sig = get_signature<Components...>();
+    entityManager->for_each(sig, [this, &f](Entity e) mutable {
+        std::forward<F>(f)(e, get_component<Components>(e)...);
+    });
+}
+
 inline void ECSController::destroy_entity(Entity& e) {
+    componentManager->entity_destroyed(e);
     entityManager->destroy_entity(e);
 }
 
@@ -68,6 +77,15 @@ void ECSController::add_components(Entity e, Components&&... components) {
     (add_component<Components>(e, std::forward<Components>(components)), ...);
 }
 
+template <typename T>
+void ECSController::remove_component(Entity e) {
+    componentManager->remove_component<T>(e);
+    entityManager->clear_entity_signature(
+        e,
+        componentManager->get_component_type<T>()
+    );
+}
+
 template <typename... Components>
 Signature ECSController::get_signature() {
     Signature sig;
@@ -75,27 +93,9 @@ Signature ECSController::get_signature() {
     return sig;
 }
 
-template <typename T, typename... Args>
-std::shared_ptr<T>
-ECSController::register_system(int priority, Args&&... args) {
-    return systemManager->register_system<T>(
-        priority,
-        std::forward<Args>(args)...
-    );
-}
-
-template <typename T>
-void ECSController::set_system_signature(Signature signature) {
-    systemManager->set_signature<T>(signature);
-}
-
-inline void ECSController::update_all() {
-    systemManager->update_all(*this);
-}
-
 template <typename T>
 auto ECSController::get_data(const std::string& name) -> T& {
-    return data[name];
+    return std::any_cast<T&>(data.at(name));
 }
 
 inline void ECSController::store_data(const std::string& name, std::any value) {

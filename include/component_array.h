@@ -1,5 +1,8 @@
 #pragma once
 #include <unordered_map>
+#include <utility>
+#include <type_traits>
+#include <array>
 
 #include "ecs_common.h"
 
@@ -26,7 +29,9 @@ class IComponentArray {
 template <typename T>
 class ComponentArray : public IComponentArray {
    public:
-    auto add_component(Entity entity, T component) -> void;
+    template <typename U>
+    auto add_component(Entity entity, U&& component) -> void
+        requires std::is_same_v<std::decay_t<U>, std::decay_t<T>>;
     auto remove_component(Entity entity) -> void;
     auto get_component(Entity entity) -> T&;
 

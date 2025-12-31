@@ -12,6 +12,7 @@ void ComponentManager::register_component() {
     ComponentId id = ComponentInfo::id<U>;
 
     assert(!componentTypes.contains(id));
+    assert(nextComponentType < MAX_COMPONENTS);
 
     componentTypes[id] = nextComponentType++;
     componentArrays[id] = std::make_shared<ComponentArray<U>>();

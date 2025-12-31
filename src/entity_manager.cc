@@ -2,6 +2,8 @@
 
 #include <algorithm>
 
+#include "ecs_common.h"
+
 namespace garnish {
 EntityManager::EntityManager() {
     for (Entity i = 0; i < MAX_ENTITIES; i++) {
@@ -20,32 +22,37 @@ Entity EntityManager::create_entity() {
 }
 
 void EntityManager::destroy_entity(Entity& e) {
-    GARNISH_VALID_ENTITY();
+    garnish_valid_entity(e);
     assert(
         std::ranges::find(availableEntities, e) == availableEntities.end() &&
         "Error: Entity already available"
     );
 
-    signatures[e] = 0;
+    signatures.at(e) = 0;
     availableEntities.push_back(e);
 
     e = DEAD_ENTITY;
 }
 
 Signature EntityManager::get_entity_signature(Entity e) {
-    GARNISH_VALID_ENTITY();
+    garnish_valid_entity(e);
     assert(
         std::ranges::find(availableEntities, e) == availableEntities.end() &&
         "Error: Entity not registered"
     );
 
-    return signatures[e];
+    return signatures.at(e);
 }
 
 void EntityManager::set_entity_signature(Entity e, ComponentType component) {
-    GARNISH_VALID_ENTITY();
+    garnish_valid_entity(e);
 
-    signatures[e].set(component);
+    signatures.at(e).set(component);
+}
+
+void EntityManager::clear_entity_signature(Entity e, ComponentType component) {
+    garnish_valid_entity(e);
+    signatures.at(e).reset(component);
 }
 
 std::vector<Entity> EntityManager::get_entities(Signature s) {
@@ -53,7 +60,7 @@ std::vector<Entity> EntityManager::get_entities(Signature s) {
 
     std::vector<Entity> entities;
     for (Entity i = 0; i < signatures.size(); i++) {
-        if ((signatures[i] & s) == s) {
+        if ((signatures.at(i) & s) == s) {
             entities.push_back(i);
         }
     }
