@@ -28,6 +28,11 @@ void EntityManager::destroy_entity(Entity& e) {
         "Error: Entity already available"
     );
 
+    if (auto it = entityToStringId.find(e); it != entityToStringId.end()) {
+        stringIdToEntity.erase(it->second);
+        entityToStringId.erase(it);
+    }
+
     signatures.at(e) = 0;
     availableEntities.push_back(e);
 
@@ -66,5 +71,56 @@ std::vector<Entity> EntityManager::get_entities(Signature s) {
     }
 
     return entities;
+}
+
+void EntityManager::register_string_id(const std::string& id, Entity e) {
+    garnish_valid_entity(e);
+    assert(
+        std::ranges::find(availableEntities, e) == availableEntities.end() &&
+        "Error: Entity not registered"
+    );
+
+    if (auto existingIt = stringIdToEntity.find(id); 
+        existingIt != stringIdToEntity.end() && existingIt->second != e) {
+        entityToStringId.erase(existingIt->second);
+    }
+
+    if (auto entityIt = entityToStringId.find(e); entityIt != entityToStringId.end()) {
+        stringIdToEntity.erase(entityIt->second);
+    }
+
+    stringIdToEntity[id] = e;
+    entityToStringId[e] = id;
+}
+
+void EntityManager::unregister_string_id(const std::string& id) {
+    if (auto it = stringIdToEntity.find(id); it != stringIdToEntity.end()) {
+        entityToStringId.erase(it->second);
+        stringIdToEntity.erase(it);
+    }
+}
+
+Entity EntityManager::get_entity_by_string_id(const std::string& id) {
+    if (auto it = stringIdToEntity.find(id); it != stringIdToEntity.end()) {
+        return it->second;
+    }
+    return DEAD_ENTITY;
+}
+
+bool EntityManager::has_string_id(const std::string& id) {
+    return stringIdToEntity.contains(id);
+}
+
+std::string EntityManager::get_string_id(Entity e) {
+    garnish_valid_entity(e);
+    if (auto it = entityToStringId.find(e); it != entityToStringId.end()) {
+        return it->second;
+    }
+    return "";
+}
+
+bool EntityManager::entity_has_string_id(Entity e) {
+    garnish_valid_entity(e);
+    return entityToStringId.contains(e);
 }
 }  // namespace garnish

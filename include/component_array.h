@@ -1,8 +1,6 @@
 #pragma once
-#include <unordered_map>
-#include <utility>
-#include <type_traits>
 #include <array>
+#include <type_traits>
 
 #include "ecs_common.h"
 
@@ -29,6 +27,8 @@ class IComponentArray {
 template <typename T>
 class ComponentArray : public IComponentArray {
    public:
+    ComponentArray();
+
     template <typename U>
     auto add_component(Entity entity, U&& component) -> void
         requires std::is_same_v<std::decay_t<U>, std::decay_t<T>>;
@@ -38,10 +38,12 @@ class ComponentArray : public IComponentArray {
     auto entity_destroyed(Entity entity) -> void override;
 
    private:
+    static constexpr std::size_t INVALID_INDEX = MAX_ENTITIES;
+
     std::array<std::decay_t<T>, MAX_ENTITIES> componentArray;
 
-    std::unordered_map<Entity, std::size_t> entityToIndex;
-    std::unordered_map<std::size_t, Entity> indexToEntity;
+    std::array<std::size_t, MAX_ENTITIES> entityToIndex;
+    std::array<Entity, MAX_ENTITIES> indexToEntity;
 
     std::size_t currentIndex = 0;
 };

@@ -49,8 +49,6 @@ class ECSController final {
     template <typename T>
     void set_system_signature(Signature signature);
 
-    // void update_all();
-
     template <class T>
     void set(T&& value);
     template <class T>
@@ -65,6 +63,16 @@ class ECSController final {
     template <typename T>
     T& get_data(const std::string& name);
     void store_data(const std::string& name, std::any value);
+
+    void register_string_id(const std::string& id, Entity e);
+    void unregister_string_id(const std::string& id);
+    Entity get_entity_by_string_id(const std::string& id);
+    bool has_string_id(const std::string& id);
+    std::string get_string_id(Entity e);
+    bool entity_has_string_id(Entity e);
+    Entity create_entity_with_string_id(const std::string& id);
+    template <typename... Components>
+    Entity create_entity_with_string_id(const std::string& id, Components&&... components);
 
    private:
     std::unique_ptr<EntityManager> entityManager;

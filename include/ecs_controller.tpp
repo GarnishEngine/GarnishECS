@@ -124,4 +124,46 @@ template <class T>
 void ECSController::remove() {
     resourceManager->remove<T>();
 }
+
+inline void ECSController::register_string_id(const std::string& id, Entity e) {
+    entityManager->register_string_id(id, e);
+}
+
+inline void ECSController::unregister_string_id(const std::string& id) {
+    entityManager->unregister_string_id(id);
+}
+
+inline Entity ECSController::get_entity_by_string_id(const std::string& id) {
+    return entityManager->get_entity_by_string_id(id);
+}
+
+inline bool ECSController::has_string_id(const std::string& id) {
+    return entityManager->has_string_id(id);
+}
+
+inline std::string ECSController::get_string_id(Entity e) {
+    return entityManager->get_string_id(e);
+}
+
+inline bool ECSController::entity_has_string_id(Entity e) {
+    return entityManager->entity_has_string_id(e);
+}
+
+inline Entity ECSController::create_entity_with_string_id(const std::string& id) {
+    Entity e = create_entity();
+    register_string_id(id, e);
+    return e;
+}
+
+template <typename... Components>
+Entity ECSController::create_entity_with_string_id(
+    const std::string& id,
+    Components&&... components
+) {
+    Entity e = create_entity_with_components<Components...>(
+        std::forward<Components>(components)...
+    );
+    register_string_id(id, e);
+    return e;
+}
 }  // namespace garnish
