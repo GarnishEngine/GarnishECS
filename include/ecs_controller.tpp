@@ -130,31 +130,33 @@ void ECSController::remove() {
     resourceManager->remove<T>();
 }
 
-void ECSController::register_string_id(const std::string& id, Entity e) {
+inline void ECSController::register_string_id(const std::string& id, Entity e) {
     entityManager->register_string_id(id, e);
 }
 
-void ECSController::unregister_string_id(const std::string& id) {
+inline void ECSController::unregister_string_id(const std::string& id) {
     entityManager->unregister_string_id(id);
 }
 
-Entity ECSController::get_entity_by_string_id(const std::string& id) {
+inline Entity ECSController::get_entity_by_string_id(const std::string& id) {
     return entityManager->get_entity_by_string_id(id);
 }
 
-bool ECSController::has_string_id(const std::string& id) {
+inline bool ECSController::has_string_id(const std::string& id) {
     return entityManager->has_string_id(id);
 }
 
-std::string ECSController::get_string_id(Entity e) {
+inline std::string ECSController::get_string_id(Entity e) {
     return entityManager->get_string_id(e);
 }
 
-bool ECSController::entity_has_string_id(Entity e) {
+inline bool ECSController::entity_has_string_id(Entity e) {
     return entityManager->entity_has_string_id(e);
 }
 
-Entity ECSController::create_entity_with_string_id(const std::string& id) {
+inline Entity ECSController::create_entity_with_string_id(
+    const std::string& id
+) {
     Entity e = create_entity();
     register_string_id(id, e);
     return e;
@@ -187,7 +189,7 @@ void ECSController::add_type() {
     componentRegistry_.emplace(ops.name, ops);
 }
 
-void ECSController::load_entity(Entity e, const Json& components) {
+inline void ECSController::load_entity(Entity e, const Json& components) {
     for (auto it = components.begin(); it != components.end(); ++it) {
         std::string_view comp_name = it.key();
         const Json& comp_data = it.value();
