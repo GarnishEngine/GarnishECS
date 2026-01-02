@@ -1,10 +1,9 @@
 #pragma once
-#include <ecs_common.h>
-
 #include <memory>
+#include <unordered_map>
 
 #include "component_array.h"
-
+#include "ecs_common.h"
 namespace garnish {
 class ComponentManager final {
    public:
@@ -35,6 +34,7 @@ class ComponentManager final {
     std::unordered_map<ComponentId, std::shared_ptr<IComponentArray>>
         componentArrays;
 };
+
 }  // namespace garnish
 
 #include "component_manager.tpp"

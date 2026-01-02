@@ -1,5 +1,7 @@
 #pragma once
 #include <any>
+#include <functional>
+#include <nlohmann/json.hpp>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -8,7 +10,15 @@
 #include "ecs_common.h"
 #include "entity_manager.h"
 #include "resource_manager.h"
+
 namespace garnish {
+using Json = nlohmann::json;
+template <class C>
+concept SceneComponent = requires(const Json& j) {
+    { C::scene_name() } -> std::convertible_to<std::string_view>;
+    { C::from_json(j) } -> std::same_as<C>;
+};
+
 class ECSController final {
    public:
     ECSController()
@@ -72,15 +82,31 @@ class ECSController final {
     bool entity_has_string_id(Entity e);
     Entity create_entity_with_string_id(const std::string& id);
     template <typename... Components>
-    Entity create_entity_with_string_id(const std::string& id, Components&&... components);
+    Entity create_entity_with_string_id(
+        const std::string& id,
+        Components&&... components
+    );
+
+    void load_entity(Entity e, const Json& components);
 
    private:
+    template <SceneComponent C>
+    void add_from_json(Entity e, const Json& j);
+    template <SceneComponent C>
+    void add_type();
     std::unique_ptr<EntityManager> entityManager;
     std::unique_ptr<ComponentManager> componentManager;
     std::unique_ptr<ResourceManager> resourceManager;
 
     std::unordered_map<std::string, std::any> data;
+
+    struct ComponentOps {
+        std::string_view name;
+        std::function<void(Entity, const Json&)> add_from_json;
+    };
+    std::unordered_map<std::string_view, ComponentOps> componentRegistry_;
 };
+
 }  // namespace garnish
 
 #include "ecs_controller.tpp"

@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 #include <utility>
 
 #include "ecs_common.h"
@@ -61,6 +62,10 @@ bool ECSController::has_component(Entity e) {
 template <typename T>
 void ECSController::register_component() {
     componentManager->register_component<T>();
+
+    if constexpr (SceneComponent<T>) {
+        add_type<T>();
+    }
 }
 
 template <typename T>
@@ -125,31 +130,31 @@ void ECSController::remove() {
     resourceManager->remove<T>();
 }
 
-inline void ECSController::register_string_id(const std::string& id, Entity e) {
+void ECSController::register_string_id(const std::string& id, Entity e) {
     entityManager->register_string_id(id, e);
 }
 
-inline void ECSController::unregister_string_id(const std::string& id) {
+void ECSController::unregister_string_id(const std::string& id) {
     entityManager->unregister_string_id(id);
 }
 
-inline Entity ECSController::get_entity_by_string_id(const std::string& id) {
+Entity ECSController::get_entity_by_string_id(const std::string& id) {
     return entityManager->get_entity_by_string_id(id);
 }
 
-inline bool ECSController::has_string_id(const std::string& id) {
+bool ECSController::has_string_id(const std::string& id) {
     return entityManager->has_string_id(id);
 }
 
-inline std::string ECSController::get_string_id(Entity e) {
+std::string ECSController::get_string_id(Entity e) {
     return entityManager->get_string_id(e);
 }
 
-inline bool ECSController::entity_has_string_id(Entity e) {
+bool ECSController::entity_has_string_id(Entity e) {
     return entityManager->entity_has_string_id(e);
 }
 
-inline Entity ECSController::create_entity_with_string_id(const std::string& id) {
+Entity ECSController::create_entity_with_string_id(const std::string& id) {
     Entity e = create_entity();
     register_string_id(id, e);
     return e;
@@ -166,4 +171,36 @@ Entity ECSController::create_entity_with_string_id(
     register_string_id(id, e);
     return e;
 }
+
+template <SceneComponent C>
+void ECSController::add_from_json(Entity e, const Json& j) {
+    add_component<C>(e, C::from_json(j));
+}
+template <SceneComponent C>
+void ECSController::add_type() {
+    ComponentOps ops{
+        .name = C::scene_name(),
+        .add_from_json = [this](Entity e, const Json& j) {
+            add_from_json<C>(e, j);
+        },
+    };
+    componentRegistry_.emplace(ops.name, ops);
+}
+
+void ECSController::load_entity(Entity e, const Json& components) {
+    for (auto it = components.begin(); it != components.end(); ++it) {
+        std::string_view comp_name = it.key();
+        const Json& comp_data = it.value();
+
+        const auto& ops = componentRegistry_.find(comp_name);
+        if (ops == componentRegistry_.end()) {
+            throw std::runtime_error(
+                std::format("Unknown component: {}", comp_name)
+            );
+        }
+
+        ops->second.add_from_json(e, comp_data);
+    }
+}
+
 }  // namespace garnish

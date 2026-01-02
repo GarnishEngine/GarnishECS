@@ -4,17 +4,22 @@
 
 namespace garnish {
 template <typename T>
-ComponentArray<T>::ComponentArray() {
+ComponentArray<T>::ComponentArray()
+    : componentArray(std::array<std::decay_t<T>, MAX_ENTITIES>()),
+      entityToIndex(std::array<Entity, MAX_ENTITIES>()),
+      indexToEntity(std::array<Entity, MAX_ENTITIES>()) {
     entityToIndex.fill(INVALID_INDEX);
 }
 
 template <typename T>
 template <typename U>
 auto ComponentArray<T>::add_component(Entity e, U&& component) -> void
-    requires std::is_same_v<std::decay_t<U>, std::decay_t<T>> {
+    requires std::is_same_v<std::decay_t<U>, std::decay_t<T>>
+{
     garnish_valid_entity(e);
     assert(
-        entityToIndex.at(e) == INVALID_INDEX && "Error: Entity already has this component"
+        entityToIndex.at(e) == INVALID_INDEX &&
+        "Error: Entity already has this component"
     );
     assert(currentIndex < MAX_ENTITIES);
     componentArray.at(currentIndex) = std::forward<U>(component);
@@ -27,7 +32,8 @@ template <typename T>
 void ComponentArray<T>::remove_component(Entity e) {
     garnish_valid_entity(e);
     assert(
-        entityToIndex.at(e) != INVALID_INDEX && "Error: Entity doesn't have this component"
+        entityToIndex.at(e) != INVALID_INDEX &&
+        "Error: Entity doesn't have this component"
     );
     std::size_t indexRemoved = entityToIndex.at(e);
     std::size_t indexOfLastElement = currentIndex - 1;
@@ -43,7 +49,8 @@ template <typename T>
 T& ComponentArray<T>::get_component(Entity e) {
     garnish_valid_entity(e);
     assert(
-        entityToIndex.at(e) != INVALID_INDEX && "Error: Entity doesn't have this component"
+        entityToIndex.at(e) != INVALID_INDEX &&
+        "Error: Entity doesn't have this component"
     );
     return componentArray.at(entityToIndex.at(e));
 }

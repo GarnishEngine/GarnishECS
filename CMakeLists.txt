@@ -12,11 +12,21 @@ option(_BUILD_UNIT_TESTS "Build Unit Tests" ON)
 # Add include directory
 include_directories("include")
 
+# Add nlohmann/json submodule
+add_subdirectory("3rdParty/nlohmann_json")
+
+# Add Google Test submodule
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+add_subdirectory("3rdParty/googletest")
+
 # Add the source files
 file(GLOB_RECURSE SOURCE_FILES "src/*.cc")
 
 # Create the library target
 add_library(GarnishECS STATIC ${SOURCE_FILES})
+
+# Link nlohmann/json
+target_link_libraries(GarnishECS PUBLIC nlohmann_json::nlohmann_json)
 
 # Set the library properties
 set_target_properties(GarnishECS PROPERTIES
